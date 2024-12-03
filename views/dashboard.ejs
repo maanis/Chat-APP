@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+                integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+                crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-zinc-950 flex overflow-hidden text-white">
+        <ul class=" h-full flex flex-col w-[4%] items-center  gap-7 p-4  text-white">
+                <li><i class="fa-solid max-md:text-[22px] max-[480px]:text-[18px] max-lg:text-[25px] text-zinc-300  fa-house text-[22px] w-6 max-[1024px]:w-auto"></i>
+                </li>
+                <li><i class="fa-regular max-md:text-[22px] max-[480px]:text-[18px] max-lg:text-[25px] fa-compass text-zinc-300 text-[22px] w-6 max-[1024px]:w-auto"></i>
+                </li>
+                <li><i class="fa-regular max-md:text-[22px] max-[480px]:text-[18px] max-lg:text-[25px] fa-comment-dots text-zinc-300 text-[22px] w-6 max-[1024px]:w-auto"></i>
+                </li>
+                <li><i class="fa-solid max-md:text-[22px] max-[480px]:text-[18px] max-lg:text-[25px] fa-video text-zinc-300 text-[22px] w-6 max-[1024px]:w-auto"></i>
+                </li>
+                <li><i class="fa-solid max-md:text-[22px] max-[480px]:text-[18px] max-lg:text-[25px] fa-globe text-zinc-300 text-[22px] w-6 max-[1024px]:w-auto"></i>
+                </li>
+                <li><i class="fa-solid max-md:text-[22px] max-[480px]:text-[18px] max-lg:text-[25px] fa-bell text-zinc-300 text-[22px] w-6 max-[1024px]:w-auto"></i>
+                </li>
+                <li><i class="fa-solid max-md:text-[22px] max-[480px]:text-[18px] max-lg:text-[25px] fa-circle-plus text-zinc-300 text-[22px] w-6 max-[1024px]:w-auto"></i>
+                </li>
+                <li><i class="fa-solid max-md:text-[22px] max-[480px]:text-[18px] max-lg:text-[25px] fa-search text-zinc-300 text-[22px] w-6 max-[1024px]:w-auto"></i>
+                </li>
+        </ul>
+        <div class="seperation w-px bg-zinc-800 h-full "></div>
+        <div class="ib b overflow-y-auto w-[20%]  bg-zinc-950">
+                <div class="input w-full relative px-5 py-3">
+                        <i
+                                class="fas fa-search absolute max-md:hidden text-zinc-400 left-6 top-1/2 -translate-y-1/2"></i>
+                        <input class="p-1 outline-none w-full text-white max-lg:w-[385px] max-[1024px]:w-[260px] max-md:hidden bg-zinc-800 rounded-md pl-8"
+                                placeholder="Search" type="text" />
+                </div>
+
+                <div class="flex mt-2 justify-between px-4">
+                        <p>messages</p>
+                        <button class="text-blue-500">requests</button>
+                </div>
+
+                <div class="users mt-5 flex flex-col gap-1">
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="user hover:bg-zinc-900 px-4 py-2">
+                                <div class="flex gap-3 items-center">
+                                        <img src="/owner.jpeg" class="w-11 h-11 object-cover rounded-full object-top"
+                                                alt="">
+                                        <div>
+                                                <p class="text-[16px]">username</p>
+                                                <p class="text-[12px] text-zinc-500">last message <span
+                                                                class="font-extrabold">.</span> <span>1h</span></p>
+                                        </div>
+                                </div>
+                        </div>
+
+                </div>
+        </div>
+        <div class="seperation w-px bg-zinc-800 h-full "></div>
+
+        <div class="dm w-[58%] bg-zinc-950 relative">
+                <div class="flex p-4 gap-3 items-center">
+                        <img src="/owner.jpeg" class="w-10 h-10 object-cover rounded-full object-top" alt="">
+                        <p>username</p>
+                        <i class="fa-solid fa-ellipsis ml-auto"></i>
+                </div>
+                <div class="seperation w-full bg-zinc-800 h-px "></div>
+
+                <div class="absolute w-full bottom-3 px-4">
+                        <div class="flex w-full h-[45px] rounded-full items-center px-3 border border-zinc-600">
+                                <i class="fa-regular fa-face-smile"></i>
+                                <textarea name=""
+                                        class=" bg-transparent h-[24px] resize-none flex items-center outline-none px-3 w-full"
+                                        id=""></textarea>
+                                <button class="text-blue-600">send</button>
+                        </div>
+                </div>
+
+        </div>
+        <div class="seperation w-px bg-zinc-800 h-full "></div>
+        <div class="about w-[18%] bg-zinc-950">
+                <div class="flex flex-col w-full items-center">
+                        <h2 class=" text-[18px] flex items-center p-2">Profile info</h2>
+                        <div class="seperation w-full bg-zinc-800 h-px "></div>
+
+                        <img src="/owner.jpeg" class="w-28 mt-4 h-28 object-cover object-top rounded-full" alt="">
+                </div>
+                <div class="flex justify-center gap-3 mt-4">
+                        <button class="bg-zinc-800 w-[95px] py-1 rounded-md">view profile</button>
+                        <button class="bg-red-600 w-[95px] py-1 rounded-md text-white">report</button>
+                </div>
+        </div>
+</body>
+
+</html

@@ -18,7 +18,7 @@
     <!-- Register Container -->
     <div id="register-container" class="p-8 bg-zinc-800 rounded-lg shadow-lg transform transition-transform duration-500">
       <h2 class="text-2xl font-semibold mb-4 text-center">Register</h2>
-      <form action="/register" method="post">
+      <form action="/register" method="post" enctype="multipart/form-data">
         <div class="mb-4">
           <label for="register-name" class="block mb-1">Name</label>
           <input required id="register-name" name="username" type="text" class="w-full px-3 py-2 border rounded bg-zinc-900 border-zinc-700 text-white">
@@ -30,6 +30,15 @@
         <div class="mb-6">
           <label for="register-password" class="block mb-1">Password</label>
           <input required id="register-password" name="password" type="password" class="w-full px-3 py-2 border rounded bg-zinc-900 border-zinc-700 text-white">
+        </div>
+        <div class="mb-6">
+          <label for="profile-photo" class="block mb-1">Profile Photo</label>
+          <input id="profile-photo" type="file" name="image" required accept="image/*" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded">
+          <div class="w-full flex justify-center">
+            <div id="photo-preview" class="mt-4 flex items-center justify-center h-32 w-32 rounded-full overflow-hidden bg-zinc-700">
+              <span class="text-sm text-gray-400">Preview</span>
+            </div>
+          </div>
         </div>
         <button type="submit" class="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Register</button>
       </form>
@@ -59,6 +68,8 @@
     const loginContainer = document.getElementById('login-container');
     const switchToLogin = document.getElementById('switch-to-login');
     const switchToRegister = document.getElementById('switch-to-register');
+    const profilePhotoInput = document.getElementById('profile-photo');
+    const photoPreview = document.getElementById('photo-preview');
 
     switchToLogin.addEventListener('click', () => {
       registerContainer.classList.add('hidden');
@@ -68,6 +79,18 @@
     switchToRegister.addEventListener('click', () => {
       loginContainer.classList.add('hidden');
       registerContainer.classList.remove('hidden');
+    });
+    profilePhotoInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          photoPreview.innerHTML = `<img src="${e.target.result}" alt="Profile Photo" class="h-full w-full object-cover">`;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        photoPreview.innerHTML = `<span class="text-sm text-gray-400">Preview</span>`;
+      }
     });
   </script>
 </body>
