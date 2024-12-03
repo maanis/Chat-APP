@@ -1,15 +1,15 @@
 var express = require('express');
-const { register } = require('../controllers/userAuth');
+const { register, login } = require('../controllers/userAuth');
 var router = express.Router();
 /* GET home page. */
 
 router.get('/', async function (req, res, next) {
-    res.render('index');
+    let error = req.flash('error')
+    res.render('index', {error});
 });
 router.post('/register', register)
-router.get('/', async function (req, res, next) {
-    res.render('index');
-});
+router.post('/login', login)
+
 
 
 module.exports = router;
