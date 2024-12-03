@@ -1,8 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  text-shadow: black;
+}
+html,
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%;
+  width: 100vw;
+  /* background-color: ; */
 }
 
-a {
-  color: #00B7FF;
+.hero {
+  height: calc(100vh - 55px);
+}
+
+.b,
+.box-b {
+  scrollbar-width: none;
+}
+
+.scroll-container {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 10px;
+  scrollbar-width: none;
 }

@@ -1,6 +1,8 @@
 var express = require('express');
 const { register, login, logout } = require('../controllers/userAuth');
 const upload = require('../config/multer-config');
+const { isLoggedIn } = require('../middlewares/isLoggedIn');
+const userModel = require('../models/userModel');
 var router = express.Router();
 /* GET home page. */
 
@@ -9,8 +11,10 @@ router.get('/', async function (req, res, next) {
     res.render('index', { error });
 });
 
-router.get('/dashboard', async function (req, res, next) {
-    res.render('dashboard')
+router.get('/dashboard', isLoggedIn,async function (req, res, next) {
+    let user = req.user
+    let allUsers = await userModel.find({_id: {$nin: user._id}})
+    res.render('dashboard', {user, allUsers})
 });
 
 router.post('/register', upload.single('image'), register)
