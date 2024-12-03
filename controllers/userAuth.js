@@ -2,6 +2,7 @@ const userModel = require('../models/userModel')
 const bcrypt = require('bcryptjs')
 const tokenGenerator = require('../utils/jwtGenerator')
 
+
 module.exports.register = async (req, res, next) => {
     try {
         const { username, email, password } = req.body
@@ -11,12 +12,17 @@ module.exports.register = async (req, res, next) => {
             res.redirect('/')
         }
         else {
+
             const hashPass = await bcrypt.hash(password, 10)
             let user = await userModel.create({
                 username,
                 email,
                 password: hashPass
             })
+            if (req.file) {
+                user.pfp = req.file.buffer.toString('base64')
+                await user.save()
+            }
             const token = tokenGenerator(user)
             res.cookie('token', token)
             res.redirect('/dashboard')
@@ -27,23 +33,23 @@ module.exports.register = async (req, res, next) => {
     }
 }
 
-module.exports.login = async(req,res,next)=>{
+module.exports.login = async (req, res, next) => {
     try {
-        const {username, password} = req.body
-        let user = await userModel.findOne({username})
-        if(user){
-           bcrypt.compare(password, user.password, (err, result)=>{
-                if(result){
+        const { username, password } = req.body
+        let user = await userModel.findOne({ username })
+        if (user) {
+            bcrypt.compare(password, user.password, (err, result) => {
+                if (result) {
                     const token = tokenGenerator(user)
                     res.cookie('token', token)
                     res.redirect('/dashboard')
-                }else{
+                } else {
                     req.flash('error', 'username or password incorrect')
                     res.redirect('/')
                 }
-           }) 
+            })
         }
-        else{
+        else {
             req.flash('error', 'you dont have an account, create it first')
             res.redirect('/')
         }
@@ -51,4 +57,9 @@ module.exports.login = async(req,res,next)=>{
         req.flash('error', error)
         res.redirect('/')
     }
+}
+
+module.exports.logout = (req, res, next) => {
+    res.cookie('token', '')
+    res.redirect('/')
 }
