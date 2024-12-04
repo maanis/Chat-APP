@@ -5,7 +5,6 @@ const { isLoggedIn } = require('../middlewares/isLoggedIn');
 const userModel = require('../models/userModel');
 var router = express.Router();
 
-
 router.get('/', async function (req, res, next) {
     let error = req.flash('error')
     res.render('index', { error });
