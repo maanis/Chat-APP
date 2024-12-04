@@ -11,6 +11,7 @@ router.get('/', async function (req, res, next) {
     res.render('index', { error });
 });
 
+
 router.get('/dashboard', isLoggedIn,async function (req, res, next) {
     let user = req.user
     let allUsers = await userModel.find({_id: {$nin: user._id}})
