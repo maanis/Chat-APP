@@ -10,8 +10,7 @@ module.exports.register = async (req, res, next) => {
         if (user) {
             req.flash('error', 'you already have an account, please login.')
             res.redirect('/')
-        }
-        else {
+        }else {
 
             const hashPass = await bcrypt.hash(password, 10)
             let user = await userModel.create({
