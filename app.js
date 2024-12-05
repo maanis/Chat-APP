@@ -8,9 +8,12 @@ var logger = require('morgan');
 var session = require('express-session');
 var flash = require('connect-flash');
 
+
 var indexRouter = require('./routes/index');
 
 var app = express();
+var server = require('http').createServer(app)
+var io = require('socket.io')(server)
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -23,6 +26,14 @@ app.use(flash());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+
+io.on('connection', (socket)=>{
+  console.log('User connected')
+  socket.on('disconnect', ()=>{
+    console.log('User disconnected')
+  })
+})
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -48,4 +59,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = {app, server};

@@ -4,22 +4,15 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var { server } = require('../app'); // Import only the server
 var debug = require('debug')('expgenerator:server');
-var http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
+require('../app').app.set('port', port); // Set port in the app instance
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -37,13 +30,11 @@ function normalizePort(val) {
   var port = parseInt(val, 10);
 
   if (isNaN(port)) {
-    // named pipe
-    return val;
+    return val; // Named pipe
   }
 
   if (port >= 0) {
-    // port number
-    return port;
+    return port; // Port number
   }
 
   return false;
@@ -62,7 +53,6 @@ function onError(error) {
     ? 'Pipe ' + port
     : 'Port ' + port;
 
-  // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
