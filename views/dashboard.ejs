@@ -128,7 +128,11 @@
 
         <script src="/javascripts/app.js"></script>
         <script>
-                var socket = io()
+                var socket = io('/chat',{
+                        auth:{
+                                token: '<%=user._id %>'
+                        }
+                })
         </script>
 </body>
 

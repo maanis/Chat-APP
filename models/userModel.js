@@ -14,9 +14,9 @@ const userModel = mongoose.Schema({
         required: true
     },
     pfp: String,
-    is_active:{
-        type:Number,
-        default: 0
+    is_active: {
+        type: Boolean,
+        default: false
     }
 })
 

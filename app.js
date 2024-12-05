@@ -10,6 +10,7 @@ var flash = require('connect-flash');
 
 
 var indexRouter = require('./routes/index');
+const userModel = require('./models/userModel');
 
 var app = express();
 var server = require('http').createServer(app)
@@ -27,13 +28,20 @@ app.use(flash());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+var usp = io.of('/chat')
 
-io.on('connection', (socket)=>{
+usp.on('connection', async (socket)=>{
+
+  const userId = socket.handshake.auth.token
+
+  await userModel.findOneAndUpdate({_id : userId}, {is_active: true})
 
   console.log('User connected')
   
-  socket.on('disconnect', ()=>{
+  socket.on('disconnect', async ()=>{
     console.log('User disconnected')
+  await userModel.findOneAndUpdate({_id : userId}, {is_active: false})
+
   })
 })
 
