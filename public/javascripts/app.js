@@ -8,5 +8,3 @@ users.forEach(e=>{
         textContainer.style.display = 'block'
     })
 })
-
-console.log('hiiii')
