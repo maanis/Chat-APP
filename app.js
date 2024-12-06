@@ -7,6 +7,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var flash = require('connect-flash');
+const cors = require('cors');
+
 
 
 var indexRouter = require('./routes/index');
@@ -22,9 +24,11 @@ app.use(session({
   saveUninitialized: true,
 }))
 
+app.use(cors());
 app.use(flash());
 
 // view engine setup
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 

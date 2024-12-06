@@ -10,13 +10,13 @@
 
 
 
-<body class="bg-zinc-900 text-white min-h-screen flex items-center justify-center">
+<body class="bg-zinc-900  text-white min-h-screen flex items-center justify-center">
   <% if (error.length > 0) { %>
     <div class="absolute bg-red-600 top-0 py-4 px-2 text-center rounded-b-md"><%= error %></div>
   <% } %>
   <div class="relative w-full max-w-sm">
     <!-- Register Container -->
-    <div id="register-container" class="p-8 bg-zinc-800 rounded-lg shadow-lg transform transition-transform duration-500">
+    <div id="register-container" class="p-8 hidden bg-zinc-800 rounded-lg shadow-lg transform transition-transform duration-500">
       <h2 class="text-2xl font-semibold mb-4 text-center">Register</h2>
       <form action="/register" method="post" enctype="multipart/form-data">
         <div class="mb-4">
@@ -46,7 +46,7 @@
     </div>
 
     <!-- Login Container -->
-    <div id="login-container" class="hidden p-8 bg-zinc-800 rounded-lg shadow-lg transform transition-transform duration-500">
+    <div id="login-container" class="p-8 bg-zinc-800 rounded-lg shadow-lg transform transition-transform duration-500">
       <h2 class="text-2xl font-semibold mb-4 text-center">Login</h2>
       <form action="/login" method="post">
         <div class="mb-4">

@@ -53,13 +53,15 @@
 
                         <% if (allUsers.length> 0) { %>
                                 <% allUsers.forEach(e=> { %>
-                                        <div class="user cursor-pointer hover:bg-zinc-900 px-4 py-2">
+                                        <div class="user cursor-pointer hover:bg-zinc-900 px-4 py-2" id="<%=e._id %>">
                                                 <div class="flex gap-3 items-center">
                                                         <div class="relative">
                                                                 <img src="data:image/png;base64,<%= e.pfp %>"
-                                                                class="w-11 h-11 object-cover rounded-full object-top"
-                                                                alt="">
-                                                                <div class="absolute w-[13px] bottom-0 right-[1px] h-[13px] rounded-full <%= e.is_active ? 'bg-green-500' : 'bg-red-500' %> border-[3px] border-zinc-900"></div>
+                                                                        class="w-11 h-11 object-cover rounded-full object-top"
+                                                                        alt="">
+                                                                <div
+                                                                        class="absolute w-[13px] bottom-0 right-[1px] h-[13px] rounded-full <%= e.is_active ? 'bg-green-500' : 'bg-red-500' %> border-[3px] border-zinc-900">
+                                                                </div>
 
                                                         </div>
                                                         <div>
@@ -110,13 +112,14 @@
                         <div class="seperation w-full bg-zinc-800 h-px "></div>
 
                         <div class="absolute w-full bottom-3 px-4">
-                                <div class="flex w-full h-[45px] rounded-full items-center px-3 border border-zinc-600">
+                                <form id="chat-form"
+                                        class="flex w-full h-[45px] rounded-full items-center px-3 border border-zinc-600">
                                         <i class="fa-regular fa-face-smile"></i>
-                                        <textarea name=""
+                                        <input type="text"
                                                 class=" bg-transparent h-[24px] resize-none flex items-center outline-none px-3 w-full"
-                                                id=""></textarea>
+                                                name="text" id="text">
                                         <button class="text-blue-600">send</button>
-                                </div>
+                                </form>
                         </div>
                 </div>
 
@@ -140,13 +143,55 @@
 
 
 
-        <script src="/javascripts/app.js"></script>
+        <!-- <script src="/javascripts/script.js"></script> -->
         <script>
+                let users = document.querySelectorAll('.user')
+                let textContainer = document.querySelector('.textContainer')
+                let dummyText = document.querySelector('.dummyText')
+                let chat_form = document.querySelector('#chat-form')
+                let text = document.querySelector('#text').value
+
+                var sender_id = '<%=user._id %>'
+                var reciever_id
+
                 var socket = io('/chat', {
                         auth: {
-                                token: '<%=user._id %>'
+                                token: sender_id
                         }
                 })
+
+
+
+                users.forEach(e => {
+                        e.addEventListener('click', (elem) => {
+                                elem.stopPropagation()
+                                dummyText.style.display = 'none'
+                                textContainer.style.display = 'block'
+                                reciever_id = elem.currentTarget.id
+                        })
+                })
+
+                chat_form.addEventListener('submit', (e) => {
+                        e.preventDefault()
+
+                        fetch('/save-chat', {
+                                method: 'POST',
+                                headers: {
+                                        'Content-Type': 'application/json', // Specify the content type
+                                },
+                                body: JSON.stringify({
+                                        sender_id: sender_id,
+                                        reciever_id: reciever_id,
+                                        text: text,
+                                }),
+                        }).then((data) => {
+                                console.log(data)
+                        })
+                })
+
+
+
+
         </script>
 </body>
 
