@@ -59,8 +59,8 @@
                                                                 <img src="data:image/png;base64,<%= e.pfp %>"
                                                                         class="w-11 h-11 object-cover rounded-full object-top"
                                                                         alt="">
-                                                                <div
-                                                                id="status-<%= e._id %>"  class="absolute w-[13px] bottom-0 right-[1px] h-[13px] rounded-full <%= e.is_active ? 'bg-green-500' : 'bg-red-500' %> border-[3px] border-zinc-900">
+                                                                <div id="status-<%= e._id %>"
+                                                                        class="absolute w-[13px] bottom-0 right-[1px] h-[13px] rounded-full <%= e.is_active ? 'bg-green-500' : 'bg-red-500' %> border-[3px] border-zinc-900">
                                                                 </div>
 
                                                         </div>
@@ -103,20 +103,24 @@
                         <p class="text-[14px] text-zinc-500">start a message by clicking any chat</p>
                 </div>
 
-                <div class="textContainer bg-red-500 h-full hidden">
-                        <div class="flex p-4 gap-3 items-center">
+                <div class="textContainer h-full hidden">
+                        <div class="flex p-4 gap-3 h-[10%] items-center">
                                 <img src="" class="w-10 h-10 object-cover rounded-full object-top" alt="">
                                 <p>username</p>
                                 <i class="fa-solid fa-ellipsis ml-auto"></i>
                         </div>
                         <div class="seperation w-full bg-zinc-800 h-px "></div>
 
-                        <div class="texts bg-yellow-500">
-
+                        <div class="texts p-3 h-[80%] flex flex-col gap-2">
+                                <h2 class="text-right my-2"><span class="bg-zinc-700 px-3 py-2 rounded-full">Hey
+                                                Raunak</span></h2>
+                                <h2 class="text-left my-2"><span
+                                                class="border border-zinc-700 px-3 py-2 rounded-full">Hey Manish</span>
+                                </h2>
                         </div>
 
 
-                        <div class="absolute w-full bottom-3 px-4">
+                        <div class="h-[10%] flex justify-self-center items-center w-full px-4">
                                 <form id="chat-form"
                                         class="flex w-full h-[45px] rounded-full items-center px-3 border border-zinc-600">
                                         <i class="fa-regular fa-face-smile"></i>
@@ -190,23 +194,28 @@
                 chat_form.addEventListener('submit', (e) => {
                         e.preventDefault()
 
-                        fetch('/save-chat', {
-                                method: 'POST',
-                                headers: {
-                                        'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                        sender_id: sender_id,
-                                        reciever_id: reciever_id,
-                                        text: text.value,
-                                }),
-                        }).then((data) => {
-                                return data.json()
-                        }).then(resp => {
-                                console.log(resp)
-                        })
+                        if (text.value != '') {
+                                fetch('/save-chat', {
+                                        method: 'POST',
+                                        headers: {
+                                                'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                                sender_id: sender_id,
+                                                reciever_id: reciever_id,
+                                                text: text.value,
+                                        }),
+                                }).then((data) => {
+                                        return data.json()
+                                }).then(resp => {
+                                        console.log(resp)
+                                })
+                                let msg = document.createElement('div')
+                                msg.innerHTML = `<h2 class="text-right my-[2px]"><span class="bg-zinc-700 px-3 py-2 rounded-full">${text.value}</span></h2>`
+                                document.querySelector('.texts').appendChild(msg)
 
-                        text.value = ''
+                                text.value = ''
+                        }
                 })
 
 
