@@ -42,7 +42,7 @@ usp.on('connection', async (socket) => {
 
     await userModel.findOneAndUpdate({ _id: userId }, { is_active: true });
 
-    usp.emit('showOnline', { user_Id: userId });
+    socket.broadcast.emit('showOnline', { user_Id: userId });
 
     socket.on('disconnect', async () => {
         console.log('User disconnected');

@@ -166,6 +166,7 @@
                 });
 
                 socket.on('showOnline', function (data) {
+                        console.log(data)
                         let elem = document.getElementById(`status-${data.user_Id}`)
                         elem.classList.remove('bg-red-500')
                         elem.classList.add('bg-green-500')
