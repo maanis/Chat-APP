@@ -27,7 +27,8 @@ router.post('/save-chat', async function (req, res, next) {
         message: req.body.text
     })
 
-    res.json({success: true}, chat)
+    res.json({success: true, chat})
+    // res.json(chat)
 })
 
 

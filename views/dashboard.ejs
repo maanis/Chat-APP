@@ -149,7 +149,7 @@
                 let textContainer = document.querySelector('.textContainer')
                 let dummyText = document.querySelector('.dummyText')
                 let chat_form = document.querySelector('#chat-form')
-                let text = document.querySelector('#text').value
+                let text = document.querySelector('#text')
 
                 var sender_id = '<%=user._id %>'
                 var reciever_id
@@ -182,11 +182,15 @@
                                 body: JSON.stringify({
                                         sender_id: sender_id,
                                         reciever_id: reciever_id,
-                                        text: text,
+                                        text: text.value,
                                 }),
                         }).then((data) => {
-                                console.log(data)
+                                return data.json()
+                        }).then(resp=>{
+                                console.log(resp)
                         })
+
+                        text.value = ''
                 })
 
 
