@@ -13,7 +13,7 @@ router.get('/', async function (req, res, next) {
 });
 
 
-router.get('/dashboard', isLoggedIn,async function (req, res, next) {
+router.get('/dashboard', isLoggedIn ,async function (req, res, next) {
     let user = req.user
     console.log(user.username)
     let allUsers = await userModel.find({_id: {$nin: user._id}})

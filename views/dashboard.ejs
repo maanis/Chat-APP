@@ -196,7 +196,7 @@
 
                                 socket.emit('catchIds', { sender_id, reciever_id })
                                 socket.on('userInfo', (data) => {
-                                        console.log(data)
+                                        // console.log(data)
                                         document.querySelector('.headSection').innerHTML = `<img src="data:image/png;base64,${data.pfp}" class="w-10 h-10 object-cover rounded-full object-top" alt="">
                                                                                                 <p>${data.username}</p>
                                                                                                 <i class="fa-solid fa-ellipsis ml-auto"></i>`
@@ -253,7 +253,7 @@
 
                 socket.on('loadOldChats', (data) => {
                         let chats = data
-                        console.log(data)
+                        console.log('chats', chats.length)
 
                         if (chats.length > 0) {
                                 document.querySelector('.texts').innerHTML = ''
@@ -278,8 +278,6 @@
 
                                 })
                                 document.querySelector('.texts').innerHTML = html
-                        } else {
-                                noChat.style.display = 'block'
                         }
                 })
 
