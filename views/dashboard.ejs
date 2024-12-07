@@ -208,7 +208,7 @@
                                 }).then((data) => {
                                         return data.json()
                                 }).then(resp => {
-                                        // console.log(resp)
+                                        console.log(resp)
 
                                         if (resp.success) {
                                                 let html = `<h2 class="text-right my-[2px]"><span class="bg-zinc-700 px-3 py-2 rounded-full">${resp.chat.message}</span></h2>`
@@ -224,9 +224,10 @@
 
                 })
                 socket.on('loadChat', (data) => {
-                        console.log(data)
-                        let html = `<h2 class="text-left my-[2px]"><span class="border border-zinc-700 px-3 py-2 rounded-full">${data.message}</span></h2>`
-                        document.querySelector('.texts').innerHTML += html
+                        if(sender_id == data.reciever_id && reciever_id == data.sender_id){
+                                let html = `<h2 class="text-left my-[2px]"><span class="border border-zinc-700 px-3 py-2 rounded-full">${data.message}</span></h2>`
+                                document.querySelector('.texts').innerHTML += html
+                        }
                 })
 
 
