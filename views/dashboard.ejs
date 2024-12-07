@@ -112,7 +112,7 @@
                         <div class="seperation w-full bg-zinc-800 h-px "></div>
 
                         <div class="texts p-3 h-[80%] relative w-full overflow-y-auto flex flex-col gap-1">
-                                      
+
                                 <div class="noChats hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                                         No chats to show..</div>
 
@@ -158,6 +158,7 @@
                 let textContainer = document.querySelector('.textContainer')
                 let dummyText = document.querySelector('.dummyText')
                 let chat_form = document.querySelector('#chat-form')
+                let text_Container = document.querySelector('.texts')
                 let text = document.querySelector('#text')
                 let noChat = document.querySelector('.noChats')
 
@@ -231,6 +232,7 @@
                                                 let html = `<h2 class="text-right w-full"><span class="bg-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${resp.chat.message}</span></h2>`
                                                 document.querySelector('.texts').innerHTML += html
                                                 text.value = ''
+                                                scrollChat()
 
                                                 socket.emit('newChat', resp.chat)
                                         }
@@ -278,8 +280,22 @@
 
                                 })
                                 document.querySelector('.texts').innerHTML = html
+                                scrollChat()
                         }
                 })
+
+                function scrollChat() {
+                        console.log('text container', text_Container);
+                        console.log('text container length: ', text_Container.scrollHeight);
+
+                        // Ensure that the container is fully rendered
+                        setTimeout(function () {
+                                text_Container.scrollTop = text_Container.scrollHeight;
+                        }, 0); // Small delay to allow rendering
+
+                }
+
+
 
 
 
