@@ -111,10 +111,8 @@
                         </div>
                         <div class="seperation w-full bg-zinc-800 h-px "></div>
 
-                        <div class="texts p-3 h-[80%] relative w-full overflow-y-auto flex flex-col gap-2">
-
-                                <h2 class="text-right w-full my-[2px]"><span class="bg-zinc-700 inline-block text-[12px] text-left max-w-[50%] p-8 h-auto px-3 py-2 rounded-full">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet earum quam animi consequuntur nulla numquam in ratione optio saepe pariatur.</span></h2>
-
+                        <div class="texts p-3 h-[80%] relative w-full overflow-y-auto flex flex-col gap-1">
+                                      
                                 <div class="noChats hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                                         No chats to show..</div>
 
@@ -230,7 +228,7 @@
                                                 if (noChat) {
                                                         noChat.style.display = 'none'
                                                 }
-                                                let html = `<h2 class="text-right w-full my-[2px]"><span class="bg-zinc-700 max-w-[45%] px-3 py-2 rounded-full">${resp.chat.message}</span></h2>`
+                                                let html = `<h2 class="text-right w-full"><span class="bg-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${resp.chat.message}</span></h2>`
                                                 document.querySelector('.texts').innerHTML += html
                                                 text.value = ''
 
@@ -248,7 +246,7 @@
                                 noChat.style.display = 'none'
                         }
                         if (sender_id == data.recieverId && reciever_id == data.senderId) {
-                                let html = `<h2 class="text-left w-full my-[2px]"><span class="border max-w-[45%] border-zinc-700 px-3 py-2 rounded-full">${data.message}</span></h2>`
+                                let html = `<h2 class="text-left w-full"><span class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${data.message}</span></h2>`
                                 document.querySelector('.texts').innerHTML += html
                         }
                 })
@@ -276,17 +274,15 @@
                                                 bg = 'border border-zinc-700'
                                         }
 
-                                        html += `<h2 class="${className} w-full my-[2px]"><span class="${bg} max-w-[45%] px-3 py-2 rounded-full">${e.message}</span></h2>`
+                                        html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
 
                                 })
                                 document.querySelector('.texts').innerHTML = html
                         } else {
-
                                 noChat.style.display = 'block'
                         }
                 })
 
-                socket.emit('recieverId', reciever_id)
 
 
 
