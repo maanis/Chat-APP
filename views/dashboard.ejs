@@ -188,6 +188,8 @@
                                 dummyText.style.display = 'none'
                                 textContainer.style.display = 'block'
                                 reciever_id = elem.currentTarget.id
+
+                                socket.emit('catchIds', {sender_id, reciever_id})
                         })
                 })
 

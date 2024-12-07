@@ -8,6 +8,7 @@ var logger = require('morgan');
 var session = require('express-session');
 var flash = require('connect-flash');
 const cors = require('cors');
+var chatModel = require('./models/textModel')
 
 
 
@@ -46,6 +47,14 @@ usp.on('connection', async (socket) => {
 
     socket.on('newChat', (data)=>{
       socket.broadcast.emit('loadChat', data)
+    })
+
+    socket.on('catchIds', async (data)=>{
+      var chats = await chatModel.find({$or: [
+        {senderId: data.sender_id, recieverId: data.reciever_id},
+        {senderId: data.reciever_id, recieverId: data.sender_id}
+      ]})
+      socket.emit('loadOldChats', chats)
     })
 
     socket.on('disconnect', async () => {
