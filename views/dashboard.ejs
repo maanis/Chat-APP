@@ -53,7 +53,7 @@
 
                         <% if (allUsers.length> 0) { %>
                                 <% allUsers.forEach(e=> { %>
-                                        <div class="user cursor-pointer hover:bg-zinc-900 px-4 py-2" id="<%=e._id %>">
+                                        <div class="user cursor-pointer  hover:bg-zinc-900 px-4 py-2" id="<%=e._id %>">
                                                 <div class="flex gap-3 items-center">
                                                         <div class="relative">
                                                                 <img src="data:image/png;base64,<%= e.pfp %>"
@@ -87,7 +87,7 @@
         </div>
         <div class="seperation w-px bg-zinc-800 h-full "></div>
 
-        <div class="dm min-w-[58%] max-md:w-[76%] bg-zinc-950 relative">
+        <div class="dm w-[76%] max-md:w-[76%] bg-zinc-950 relative">
 
 
                 <div
@@ -103,20 +103,22 @@
                         <p class="text-[14px] text-zinc-500">start a message by clicking any chat</p>
                 </div>
 
-                <div class="textContainer h-full hidden">
-                        <div class="flex p-4 gap-3 h-[10%] items-center">
+                <div class="textContainer h-full w-full hidden">
+                        <div class="flex headSection p-4 gap-3 h-[10%] items-center">
                                 <img src="" class="w-10 h-10 object-cover rounded-full object-top" alt="">
                                 <p>username</p>
                                 <i class="fa-solid fa-ellipsis ml-auto"></i>
                         </div>
                         <div class="seperation w-full bg-zinc-800 h-px "></div>
 
-                        <div class="texts p-3 h-[80%] overflow-y-auto flex flex-col gap-2">
-                                <h2 class="text-right my-2"><span class="bg-zinc-700 px-3 py-2 rounded-full">Hey
-                                                Raunak</span></h2>
-                                <h2 class="text-left my-2"><span
-                                                class="border border-zinc-700 px-3 py-2 rounded-full">Hey Manish</span>
-                                </h2>
+                        <div class="texts p-3 h-[80%] relative w-full overflow-y-auto flex flex-col gap-2">
+
+                                <h2 class="text-right w-full my-[2px]"><span class="bg-zinc-700 inline-block text-[12px] text-left max-w-[50%] p-8 h-auto px-3 py-2 rounded-full">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet earum quam animi consequuntur nulla numquam in ratione optio saepe pariatur.</span></h2>
+
+                                <div class="noChats hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                                        No chats to show..</div>
+
+
                         </div>
 
 
@@ -133,13 +135,13 @@
                 </div>
 
         </div>
-        <div class="seperation w-px bg-zinc-800 max-md:hidden h-full"></div>
-        <div class="about w-[18%] max-md:hidden bg-zinc-950">
+        <div class="seperation-about w-px bg-zinc-800 hidden max-md:hidden h-full"></div>
+        <div class="about hidden w-[18%] max-md:hidden bg-zinc-950">
                 <div class="flex flex-col w-full items-center">
                         <h2 class=" text-[18px] flex items-center p-2">Profile info</h2>
                         <div class="seperation w-full bg-zinc-800 h-px "></div>
 
-                        <img src="" class="w-28 mt-4 h-28 object-cover object-top rounded-full" alt="">
+                        <img src="" class="w-28 mt-4 h-28 object-cover aboutImg object-top rounded-full" alt="">
                 </div>
                 <div class="flex justify-center gap-3 mt-4">
                         <button class="bg-zinc-800 w-[95px] py-1 rounded-md">view profile</button>
@@ -159,6 +161,7 @@
                 let dummyText = document.querySelector('.dummyText')
                 let chat_form = document.querySelector('#chat-form')
                 let text = document.querySelector('#text')
+                let noChat = document.querySelector('.noChats')
 
                 var sender_id = '<%=user._id %>'
                 var reciever_id
@@ -186,10 +189,21 @@
                         e.addEventListener('click', (elem) => {
                                 elem.stopPropagation()
                                 dummyText.style.display = 'none'
+                                document.querySelector('.about').style.display = 'block'
+                                document.querySelector('.seperation-about').style.display = 'block'
                                 textContainer.style.display = 'block'
                                 reciever_id = elem.currentTarget.id
+                                users.forEach(li => li.classList.remove('bg-zinc-900'));
+                                elem.currentTarget.classList.add('bg-zinc-900');
 
-                                socket.emit('catchIds', {sender_id, reciever_id})
+                                socket.emit('catchIds', { sender_id, reciever_id })
+                                socket.on('userInfo', (data) => {
+                                        console.log(data)
+                                        document.querySelector('.headSection').innerHTML = `<img src="data:image/png;base64,${data.pfp}" class="w-10 h-10 object-cover rounded-full object-top" alt="">
+                                                                                                <p>${data.username}</p>
+                                                                                                <i class="fa-solid fa-ellipsis ml-auto"></i>`
+                                        document.querySelector('.aboutImg').src = `data:image/png;base64,${data.pfp}`
+                                })
                         })
                 })
 
@@ -213,7 +227,10 @@
                                         console.log(resp)
 
                                         if (resp.success) {
-                                                let html = `<h2 class="text-right my-[2px]"><span class="bg-zinc-700 px-3 py-2 rounded-full">${resp.chat.message}</span></h2>`
+                                                if (noChat) {
+                                                        noChat.style.display = 'none'
+                                                }
+                                                let html = `<h2 class="text-right w-full my-[2px]"><span class="bg-zinc-700 max-w-[45%] px-3 py-2 rounded-full">${resp.chat.message}</span></h2>`
                                                 document.querySelector('.texts').innerHTML += html
                                                 text.value = ''
 
@@ -224,13 +241,52 @@
                         }
 
                 })
+
                 socket.on('loadChat', (data) => {
-                        if(sender_id == data.reciever_id && reciever_id == data.sender_id){
-                                let html = `<h2 class="text-left my-[2px]"><span class="border border-zinc-700 px-3 py-2 rounded-full">${data.message}</span></h2>`
+                        console.log('loadChat: ', data)
+                        if (noChat) {
+                                noChat.style.display = 'none'
+                        }
+                        if (sender_id == data.recieverId && reciever_id == data.senderId) {
+                                let html = `<h2 class="text-left w-full my-[2px]"><span class="border max-w-[45%] border-zinc-700 px-3 py-2 rounded-full">${data.message}</span></h2>`
                                 document.querySelector('.texts').innerHTML += html
                         }
                 })
 
+                socket.on('loadOldChats', (data) => {
+                        let chats = data
+                        console.log(data)
+
+                        if (chats.length > 0) {
+                                document.querySelector('.texts').innerHTML = ''
+                                let html = ''
+
+                                chats.forEach(e => {
+
+                                        console.log(e)
+
+                                        let className = ''
+                                        let bg = ''
+
+                                        if (e.senderId == sender_id) {
+                                                className = 'text-right'
+                                                bg = 'bg-zinc-700'
+                                        } else {
+                                                className = 'text-left '
+                                                bg = 'border border-zinc-700'
+                                        }
+
+                                        html += `<h2 class="${className} w-full my-[2px]"><span class="${bg} max-w-[45%] px-3 py-2 rounded-full">${e.message}</span></h2>`
+
+                                })
+                                document.querySelector('.texts').innerHTML = html
+                        } else {
+
+                                noChat.style.display = 'block'
+                        }
+                })
+
+                socket.emit('recieverId', reciever_id)
 
 
 
