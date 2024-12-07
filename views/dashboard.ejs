@@ -87,7 +87,7 @@
         </div>
         <div class="seperation w-px bg-zinc-800 h-full "></div>
 
-        <div class="dm min-w-[58%]  bg-zinc-950 relative">
+        <div class="dm min-w-[58%] max-md:w-[76%] bg-zinc-950 relative">
 
 
                 <div
@@ -111,7 +111,7 @@
                         </div>
                         <div class="seperation w-full bg-zinc-800 h-px "></div>
 
-                        <div class="texts p-3 h-[80%] flex flex-col gap-2">
+                        <div class="texts p-3 h-[80%] overflow-y-auto flex flex-col gap-2">
                                 <h2 class="text-right my-2"><span class="bg-zinc-700 px-3 py-2 rounded-full">Hey
                                                 Raunak</span></h2>
                                 <h2 class="text-left my-2"><span
@@ -133,8 +133,8 @@
                 </div>
 
         </div>
-        <div class="seperation w-px bg-zinc-800 h-full"></div>
-        <div class="about w-[18%] bg-zinc-950">
+        <div class="seperation w-px bg-zinc-800 max-md:hidden h-full"></div>
+        <div class="about w-[18%] max-md:hidden bg-zinc-950">
                 <div class="flex flex-col w-full items-center">
                         <h2 class=" text-[18px] flex items-center p-2">Profile info</h2>
                         <div class="seperation w-full bg-zinc-800 h-px "></div>
@@ -170,7 +170,7 @@
                 });
 
                 socket.on('showOnline', function (data) {
-                        console.log(data)
+                        // console.log(data)
                         let elem = document.getElementById(`status-${data.user_Id}`)
                         elem.classList.remove('bg-red-500')
                         elem.classList.add('bg-green-500')
@@ -208,14 +208,25 @@
                                 }).then((data) => {
                                         return data.json()
                                 }).then(resp => {
-                                        console.log(resp)
-                                })
-                                let msg = document.createElement('div')
-                                msg.innerHTML = `<h2 class="text-right my-[2px]"><span class="bg-zinc-700 px-3 py-2 rounded-full">${text.value}</span></h2>`
-                                document.querySelector('.texts').appendChild(msg)
+                                        // console.log(resp)
 
-                                text.value = ''
+                                        if (resp.success) {
+                                                let html = `<h2 class="text-right my-[2px]"><span class="bg-zinc-700 px-3 py-2 rounded-full">${resp.chat.message}</span></h2>`
+                                                document.querySelector('.texts').innerHTML += html
+                                                text.value = ''
+
+                                                socket.emit('newChat', resp.chat)
+                                        }
+
+                                })
+
                         }
+
+                })
+                socket.on('loadChat', (data) => {
+                        console.log(data)
+                        let html = `<h2 class="text-left my-[2px]"><span class="border border-zinc-700 px-3 py-2 rounded-full">${data.message}</span></h2>`
+                        document.querySelector('.texts').innerHTML += html
                 })
 
 
