@@ -206,6 +206,7 @@
                                 users.forEach(li => li.classList.remove('bg-zinc-900'));
                                 elem.currentTarget.classList.add('bg-zinc-900');
 
+
                                 socket.emit('catchIds', { sender_id, reciever_id })
                                 socket.on('userInfo', (data) => {
                                         // console.log(data)
@@ -214,6 +215,105 @@
                                                                                                 <i class="fa-solid fa-ellipsis ml-auto"></i>`
                                         document.querySelector('.aboutImg').src = `data:image/png;base64,${data.pfp}`
                                 })
+
+                                socket.on('loadOldChats', (data) => {
+                                        let chats = data
+                                        console.log('chats', chats.length)
+
+                                        if (chats.length > 0) {
+                                                document.querySelector('.texts').innerHTML = ''
+                                                let html = ''
+
+                                                chats.forEach(e => {
+                                                        console.log('text', e)
+
+                                                        if (e.senderId === sender_id) {
+                                                                // html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
+                                                                html += `<h2 class="text-right relative  realText  w-full">
+                                        <div class="wrapper">
+                                                <span
+                                                class="bg-zinc-700 group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">
+                                                ${e.message}
+
+                                                <div
+                                                        class="hidden group-hover:flex absolute z-50 right-[102%] top-0 flex-col bg-[#262626] text-white rounded-lg w-48 py-4 shadow-lg">
+                                                        <!-- Timestamp -->
+                                                        <div class="text-sm text-left text-gray-400 px-4 mb-4">Mon 00:02
+                                                        </div>
+
+                                                        <!-- Forward Button -->
+                                                        <button
+                                                                class="flex items-center justify-start text-sm px-4 text-white hover:bg-[#1a1a1a] py-3">
+                                                                <span class="mr-2">✈️</span>
+                                                                Forward
+                                                        </button>
+
+                                                        <!-- Separator -->
+                                                        <div class="border-t  border-gray-600"></div>
+
+                                                        <!-- Copy Button -->
+                                                        <button
+                                                                class="flex items-center justify-start px-4 text-sm text-white hover:bg-[#1a1a1a] py-3">
+                                                                <span class="mr-2">📋</span>
+                                                                Copy
+                                                        </button>
+
+                                                        <!-- Separator -->
+                                                        <div class="border-t border-gray-600"></div>
+
+                                                        <!-- Unsend Button -->
+                                                        <button
+                                                                id='${e._id}'
+                                                                class="flex items-center deleteMessage justify-start px-4 text-sm text-red-500 hover:bg-[#1a1a1a] py-3">
+                                                                <span class="mr-2">↩️</span>
+                                                                Unsend
+                                                        </button>
+                                                </div>
+                                        </span>
+                                        </div>
+
+                                </h2>`
+                                                        } else {
+                                                                // className = 'text-left '
+                                                                // bg = 'border border-zinc-700'
+                                                                html += `<h2 id='${e._id}-text' class="text-left w-full"><span class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
+                                                        }
+
+                                                })
+                                                document.querySelector('.texts').innerHTML = html
+                                                scrollChat()
+                                                let allMsg = document.querySelectorAll('.deleteMessage')
+                                                allMsg.forEach((e) => {
+                                                        e.addEventListener('click', (e) => {
+                                                                delete_id = e.target.id
+
+                                                                fetch('/delete-chat', {
+                                                                        method: 'POST',
+                                                                        headers: {
+                                                                                'Content-Type': 'application/json',
+                                                                        },
+                                                                        body: JSON.stringify({
+                                                                                delete_id: delete_id
+                                                                        })
+                                                                }).then(res=>{
+                                                                        return res.json()
+                                                                }).then(data=>{
+                                                                        if(data.success){
+                                                                                document.getElementById(`#${delete_id}-text`).remove()
+                                                                        }else{
+                                                                                alert('something went wrong')
+                                                                        }
+                                                                })
+                                                        })
+                                                })
+
+
+
+                                        } else {
+                                                noChat.style.display = 'block'
+                                        }
+                                })
+
 
                         })
                 })
@@ -241,7 +341,7 @@
                                                 if (noChat) {
                                                         noChat.style.display = 'none'
                                                 }
-                                                let html = `<h2 class="text-right relative  realText  w-full">
+                                                let html = `<h2 id='${resp.chat._id}-text' class="text-right relative  realText  w-full">
                                         <div class="wrapper">
                                                 <span
                                                 class="bg-zinc-700 group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">
@@ -303,7 +403,7 @@
                                 noChat.style.display = 'none'
                         }
                         if (sender_id == data.recieverId && reciever_id == data.senderId) {
-                                let html = `<h2 class="text-left w-full"><span class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${data.message}</span></h2>`
+                                let html = `<h2 id='${data._id}-text' class="text-left w-full"><span class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">${data.message}</span></h2>`
                                 document.querySelector('.texts').innerHTML += html
                                 scrollChat()
                         }
@@ -315,136 +415,17 @@
                         console.log('text container', text_Container);
                         console.log('text container length: ', text_Container.scrollHeight);
 
-                        // Ensure that the container is fully rendered
+
                         setTimeout(function () {
                                 text_Container.scrollTop = text_Container.scrollHeight;
-                        }, 0); // Small delay to allow rendering
+                        }, 0);
 
                 }
 
 
 
 
-                socket.on('loadOldChats', (data) => {
-                        let chats = data
-                        console.log('chats', chats.length)
 
-                        if (chats.length > 0) {
-                                document.querySelector('.texts').innerHTML = ''
-                                let html = ''
-
-                                chats.forEach(e => {
-
-                                        if (e.senderId === sender_id) {
-                                                // html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
-                                                html += `<h2 class="text-right relative  realText  w-full">
-                                        <div class="wrapper">
-                                                <span
-                                                class="bg-zinc-700 group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">
-                                                ${e.message}
-
-                                                <div
-                                                        class="hidden group-hover:flex absolute z-50 right-[102%] top-0 flex-col bg-[#262626] text-white rounded-lg w-48 py-4 shadow-lg">
-                                                        <!-- Timestamp -->
-                                                        <div class="text-sm text-left text-gray-400 px-4 mb-4">Mon 00:02
-                                                        </div>
-
-                                                        <!-- Forward Button -->
-                                                        <button
-                                                                class="flex items-center justify-start text-sm px-4 text-white hover:bg-[#1a1a1a] py-3">
-                                                                <span class="mr-2">✈️</span>
-                                                                Forward
-                                                        </button>
-
-                                                        <!-- Separator -->
-                                                        <div class="border-t  border-gray-600"></div>
-
-                                                        <!-- Copy Button -->
-                                                        <button
-                                                                class="flex items-center justify-start px-4 text-sm text-white hover:bg-[#1a1a1a] py-3">
-                                                                <span class="mr-2">📋</span>
-                                                                Copy
-                                                        </button>
-
-                                                        <!-- Separator -->
-                                                        <div class="border-t border-gray-600"></div>
-
-                                                        <!-- Unsend Button -->
-                                                        <button
-                                                                id='${e._id}'
-                                                                class="flex items-center deleteMessage justify-start px-4 text-sm text-red-500 hover:bg-[#1a1a1a] py-3">
-                                                                <span class="mr-2">↩️</span>
-                                                                Unsend
-                                                        </button>
-                                                </div>
-                                        </span>
-                                        </div>
-
-                                </h2>`
-                                        } else {
-                                                // className = 'text-left '
-                                                // bg = 'border border-zinc-700'
-                                                html += `<h2 class="text-left w-full"><span class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
-                                        }
-
-
-
-                                        //         if (className === 'text-left') {
-                                        //                 html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
-                                        //         } else {
-                                        //                 html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
-
-                                        //                 html += `<h2 class="text-right relative  realText  w-full">
-                                        //         <div class="wrapper">
-                                        //                 <span
-                                        //                 class="bg-zinc-700 group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">
-                                        //                 ${e.message}
-
-                                        //                 <div
-                                        //                         class="hidden group-hover:flex absolute z-50 right-[102%] top-0 flex-col bg-[#262626] text-white rounded-lg w-48 py-4 shadow-lg">
-                                        //                         <!-- Timestamp -->
-                                        //                         <div class="text-sm text-left text-gray-400 px-4 mb-4">Mon 00:02
-                                        //                         </div>
-
-                                        //                         <!-- Forward Button -->
-                                        //                         <button
-                                        //                                 class="flex items-center justify-start text-sm px-4 text-white hover:bg-[#1a1a1a] py-3">
-                                        //                                 <span class="mr-2">✈️</span>
-                                        //                                 Forward
-                                        //                         </button>
-
-                                        //                         <!-- Separator -->
-                                        //                         <div class="border-t  border-gray-600"></div>
-
-                                        //                         <!-- Copy Button -->
-                                        //                         <button
-                                        //                                 class="flex items-center justify-start px-4 text-sm text-white hover:bg-[#1a1a1a] py-3">
-                                        //                                 <span class="mr-2">📋</span>
-                                        //                                 Copy
-                                        //                         </button>
-
-                                        //                         <!-- Separator -->
-                                        //                         <div class="border-t border-gray-600"></div>
-
-                                        //                         <!-- Unsend Button -->
-                                        //                         <button
-                                        //                                 id='${e._id}'
-                                        //                                 class="flex items-center deleteMessage justify-start px-4 text-sm text-red-500 hover:bg-[#1a1a1a] py-3">
-                                        //                                 <span class="mr-2">↩️</span>
-                                        //                                 Unsend
-                                        //                         </button>
-                                        //                 </div>
-                                        //         </span>
-                                        //         </div>
-
-                                        // </h2>`
-                                        //         }
-
-                                })
-                                document.querySelector('.texts').innerHTML = html
-                                scrollChat()
-                        }
-                })
 
 
         </script>

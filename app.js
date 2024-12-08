@@ -61,31 +61,6 @@ usp.on('connection', async (socket) => {
       socket.emit('userInfo', user)
     })
 
-
-    socket.on('deleteId',async (data)=>{
-      console.log(data)
-      var deleteChat = await chatModel.findOneAndDelete({
-        $or: [
-          { senderId: data.sender_id, recieverId: data.reciever_id },
-          { senderId: data.reciever_id, recieverId: data.sender_id }
-        ],
-        _id: data.delete_id // Specify the exact chat to delete
-      });
-
-      let chats = await chatModel.find({
-        $or: [
-          { senderId: data.sender_id, recieverId: data.reciever_id },
-          { senderId: data.reciever_id, recieverId: data.sender_id }
-        ]
-      });
-      // await chatModel.findOneAndDelete({_id: data.delete_id})
-      console.log('remaining',chats)
-      socket.emit('loadOldChats', chats)
-
-    })
-
- 
-
     socket.on('disconnect', async () => {
         console.log('User disconnected');
         await userModel.findOneAndUpdate({ _id: userId }, { is_active: false });

@@ -36,6 +36,12 @@ router.post('/register', upload.single('image'), register)
 
 router.post('/login', login)
 
+router.post('/delete-chat', async (req,res)=>{
+    let id = req.body.delete_id
+    await chatModel.deleteOne({_id: id})
+    res.send({success: true})
+})
+
 
 router.get('/logout', logout)
 
