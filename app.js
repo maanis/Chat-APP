@@ -48,6 +48,7 @@ usp.on('connection', async (socket) => {
     socket.on('newChat', (data)=>{
       socket.broadcast.emit('loadChat', data)
     })
+    
 
     socket.on('catchIds', async (data)=>{
       var user = await userModel.findOne({_id: data.reciever_id})
