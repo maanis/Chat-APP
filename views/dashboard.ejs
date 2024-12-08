@@ -214,96 +214,6 @@
                                                                                                 <i class="fa-solid fa-ellipsis ml-auto"></i>`
                                         document.querySelector('.aboutImg').src = `data:image/png;base64,${data.pfp}`
                                 })
-                                socket.on('loadOldChats', (data) => {
-                                        let chats = data
-                                        console.log('chats', chats.length)
-
-                                        if (chats.length > 0) {
-                                                document.querySelector('.texts').innerHTML = ''
-                                                let html = ''
-
-                                                chats.forEach(e => {
-
-                                                        console.log('test', e)
-
-                                                        let className = ''
-                                                        let bg = ''
-
-                                                        if (e.senderId == sender_id) {
-                                                                className = 'text-right'
-                                                                bg = 'bg-zinc-700'
-                                                        } else {
-                                                                className = 'text-left '
-                                                                bg = 'border border-zinc-700'
-                                                        }
-
-                                                        if (className === 'text-left') {
-                                                                html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
-                                                        } else {
-                                                                html += `<h2 class="text-right relative  realText  w-full">
-                                        <div class="wrapper">
-                                                <span
-                                                class="bg-zinc-700 group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">
-                                                ${e.message}
-
-                                                <div
-                                                        class="hidden group-hover:flex absolute z-50 right-[102%] top-0 flex-col bg-[#262626] text-white rounded-lg w-48 py-4 shadow-lg">
-                                                        <!-- Timestamp -->
-                                                        <div class="text-sm text-left text-gray-400 px-4 mb-4">Mon 00:02
-                                                        </div>
-
-                                                        <!-- Forward Button -->
-                                                        <button
-                                                                class="flex items-center justify-start text-sm px-4 text-white hover:bg-[#1a1a1a] py-3">
-                                                                <span class="mr-2">✈️</span>
-                                                                Forward
-                                                        </button>
-
-                                                        <!-- Separator -->
-                                                        <div class="border-t  border-gray-600"></div>
-
-                                                        <!-- Copy Button -->
-                                                        <button
-                                                                class="flex items-center justify-start px-4 text-sm text-white hover:bg-[#1a1a1a] py-3">
-                                                                <span class="mr-2">📋</span>
-                                                                Copy
-                                                        </button>
-
-                                                        <!-- Separator -->
-                                                        <div class="border-t border-gray-600"></div>
-
-                                                        <!-- Unsend Button -->
-                                                        <button
-                                                                id='${e._id}'
-                                                                class="flex items-center deleteMessage justify-start px-4 text-sm text-red-500 hover:bg-[#1a1a1a] py-3">
-                                                                <span class="mr-2">↩️</span>
-                                                                Unsend
-                                                        </button>
-                                                </div>
-                                        </span>
-                                        </div>
-
-                                </h2>`
-                                                        }
-
-                                                })
-                                                document.querySelector('.texts').innerHTML = html
-                                                scrollChat()
-                                                let deleteMessage = document.querySelectorAll('.deleteMessage')
-                                                console.log(deleteMessage)
-                                                deleteMessage.forEach(e => {
-                                                        console.log(e)
-                                                        e.addEventListener('click', (elem) => {
-                                                                delete_id = elem.target.id
-                                                                socket.emit('deleteId', { sender_id, reciever_id, delete_id })
-                                                                loadChats()
-                                                        })
-                                                })
-
-                                        }
-                                })
-
-
 
                         })
                 })
@@ -395,6 +305,7 @@
                         if (sender_id == data.recieverId && reciever_id == data.senderId) {
                                 let html = `<h2 class="text-left w-full"><span class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${data.message}</span></h2>`
                                 document.querySelector('.texts').innerHTML += html
+                                scrollChat()
                         }
                 })
 
@@ -414,34 +325,19 @@
 
 
 
-                function loadChats() {
-                        socket.on('loadOldChats', (data) => {
-                                let chats = data
-                                console.log('chats', chats.length)
+                socket.on('loadOldChats', (data) => {
+                        let chats = data
+                        console.log('chats', chats.length)
 
-                                if (chats.length > 0) {
-                                        document.querySelector('.texts').innerHTML = ''
-                                        let html = ''
+                        if (chats.length > 0) {
+                                document.querySelector('.texts').innerHTML = ''
+                                let html = ''
 
-                                        chats.forEach(e => {
+                                chats.forEach(e => {
 
-                                                console.log('test', e)
-
-                                                let className = ''
-                                                let bg = ''
-
-                                                if (e.senderId == sender_id) {
-                                                        className = 'text-right'
-                                                        bg = 'bg-zinc-700'
-                                                } else {
-                                                        className = 'text-left '
-                                                        bg = 'border border-zinc-700'
-                                                }
-
-                                                if (className === 'text-left') {
-                                                        html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
-                                                } else {
-                                                        html += `<h2 class="text-right relative  realText  w-full">
+                                        if (e.senderId === sender_id) {
+                                                // html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
+                                                html += `<h2 class="text-right relative  realText  w-full">
                                         <div class="wrapper">
                                                 <span
                                                 class="bg-zinc-700 group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">
@@ -485,14 +381,70 @@
                                         </div>
 
                                 </h2>`
-                                                }
+                                        } else {
+                                                // className = 'text-left '
+                                                // bg = 'border border-zinc-700'
+                                                html += `<h2 class="text-left w-full"><span class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
+                                        }
 
-                                        })
-                                        document.querySelector('.texts').innerHTML = html
-                                }
-                        })
-                }
 
+
+                                        //         if (className === 'text-left') {
+                                        //                 html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
+                                        //         } else {
+                                        //                 html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
+
+                                        //                 html += `<h2 class="text-right relative  realText  w-full">
+                                        //         <div class="wrapper">
+                                        //                 <span
+                                        //                 class="bg-zinc-700 group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">
+                                        //                 ${e.message}
+
+                                        //                 <div
+                                        //                         class="hidden group-hover:flex absolute z-50 right-[102%] top-0 flex-col bg-[#262626] text-white rounded-lg w-48 py-4 shadow-lg">
+                                        //                         <!-- Timestamp -->
+                                        //                         <div class="text-sm text-left text-gray-400 px-4 mb-4">Mon 00:02
+                                        //                         </div>
+
+                                        //                         <!-- Forward Button -->
+                                        //                         <button
+                                        //                                 class="flex items-center justify-start text-sm px-4 text-white hover:bg-[#1a1a1a] py-3">
+                                        //                                 <span class="mr-2">✈️</span>
+                                        //                                 Forward
+                                        //                         </button>
+
+                                        //                         <!-- Separator -->
+                                        //                         <div class="border-t  border-gray-600"></div>
+
+                                        //                         <!-- Copy Button -->
+                                        //                         <button
+                                        //                                 class="flex items-center justify-start px-4 text-sm text-white hover:bg-[#1a1a1a] py-3">
+                                        //                                 <span class="mr-2">📋</span>
+                                        //                                 Copy
+                                        //                         </button>
+
+                                        //                         <!-- Separator -->
+                                        //                         <div class="border-t border-gray-600"></div>
+
+                                        //                         <!-- Unsend Button -->
+                                        //                         <button
+                                        //                                 id='${e._id}'
+                                        //                                 class="flex items-center deleteMessage justify-start px-4 text-sm text-red-500 hover:bg-[#1a1a1a] py-3">
+                                        //                                 <span class="mr-2">↩️</span>
+                                        //                                 Unsend
+                                        //                         </button>
+                                        //                 </div>
+                                        //         </span>
+                                        //         </div>
+
+                                        // </h2>`
+                                        //         }
+
+                                })
+                                document.querySelector('.texts').innerHTML = html
+                                scrollChat()
+                        }
+                })
 
 
         </script>
