@@ -62,7 +62,6 @@ usp.on('connection', async (socket) => {
     })
 
     socket.on('deleteMsg', (id)=>{
-      console.log('delete msg',id)
       socket.broadcast.emit('deletedMsgEvent', id)
     })
 
