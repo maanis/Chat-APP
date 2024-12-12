@@ -293,7 +293,7 @@
                                                 }
                                                 let html = `<h2 id='${resp.chat._id}-text'  class="text-right  relative  realText  w-full">
                                         <div class="wrapper">
-                                                <span
+                                                <span id='update-${resp.chat._id}
                                                 class="bg-zinc-300 shadow-2xl shadow-black group cursor-pointer relative inline-block shadow-2xl z-1 text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">
                                                 ${resp.chat.message}
 
@@ -406,7 +406,7 @@
                                                         // html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
                                                         html += `<h2 id='${e._id}-text' class="text-right relative  realText  w-full">
                                         <div class="wrapper">
-                                                <span
+                                                <span id='update-${e._id}'
                                                 class="bg-zinc-300 shadow-2xl z-1 shadow-black group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">
                                                 ${e.message}
 
@@ -545,7 +545,12 @@
                                                                         return res.json()
                                                                 }).then(data => {
                                                                         console.log('dattttatatatat', data)
-                                                                        loadOldChat()
+                                                                        let elem = document.getElementById(`update-${data._id}`)     
+                                                                        if(elem){
+                                                                                const textNode = Array.from(elem.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
+                                                                                textNode.textContent = data.message
+                                                                        }
+
                                                                 })
                                                         })
                                                 }

@@ -55,6 +55,7 @@ router.post('/update-chat', async (req,res)=>{
     let chat = await chatModel.findOne({_id: id})
     chat.message = text
     await chat.save()
+    res.send(chat)
 })
 
 
