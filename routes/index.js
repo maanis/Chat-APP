@@ -42,6 +42,21 @@ router.post('/delete-chat', async (req,res)=>{
     res.send({success: true})
 })
 
+router.post('/edit-chat', async (req,res)=>{
+    let id = req.body.edit_id
+    let msg = await chatModel.findOne({_id: id})
+    console.log(msg)
+    res.send({success: true, msg})
+})
+
+router.post('/update-chat', async (req,res)=>{
+    let text = req.body.text
+    let id = req.body.id
+    let chat = await chatModel.findOne({_id: id})
+    chat.message = text
+    await chat.save()
+})
+
 
 router.get('/logout', logout)
 
