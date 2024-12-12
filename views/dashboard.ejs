@@ -153,8 +153,6 @@
                                                 <input type="text"
                                                         class=" bg-transparent text-white h-[24px] resize-none flex items-center outline-none px-3 w-full"
                                                         name="text" id="text">
-                                                <button id="update"
-                                                        class="text-white text-xl bg-blue-600 absolute h-full px-4 rounded-r-full  right-32">Update</button>
                                                 <button
                                                         class="text-white text-xl bg-blue-600 absolute h-full px-4 rounded-r-full  right-0">send</button>
                                         </form>
@@ -541,11 +539,12 @@
                                                                         return res.json()
                                                                 }).then(data => {
                                                                         console.log('dattttatatatat', data)
-                                                                        let elem = document.getElementById(`update-${data._id}`)     
-                                                                        if(elem){
+                                                                        let elem = document.getElementById(`update-${data._id}`)
+                                                                        if (elem) {
                                                                                 const textNode = Array.from(elem.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
                                                                                 textNode.textContent = data.message
                                                                                 text.value = ''
+                                                                                socket.emit('editMsg', { msg: data.message, id: data._id })
                                                                         }
 
 
@@ -556,6 +555,17 @@
                                 })
                         })
                 }
+
+                socket.on('editMsgEvent', (data) => {
+                        console.log(data)
+                        let elem = document.getElementById(`update-${data.id}`)
+                        console.log(elem)
+                        if (elem) {
+                                const textNode = Array.from(elem.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
+                                console.log(textNode)
+                                textNode.textContent = data.msg
+                        }
+                })
 
 
                 const aboutSection = document.querySelector('.about');

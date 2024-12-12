@@ -65,6 +65,11 @@ usp.on('connection', async (socket) => {
       socket.broadcast.emit('deletedMsgEvent', id)
     })
 
+    socket.on('editMsg', (data)=>{
+      socket.broadcast.emit('editMsgEvent', data)
+    })
+
+
     socket.on('disconnect', async () => {
         console.log('User disconnected');
         await userModel.findOneAndUpdate({ _id: userId }, { is_active: false });
