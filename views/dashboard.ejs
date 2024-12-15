@@ -214,7 +214,6 @@
                 });
 
                 socket.on('showOnline', function (data) {
-                        // console.log(data)
                         let elem = document.getElementById(`status-${data.user_Id}`)
                         elem.classList.remove('bg-red-500')
                         elem.classList.add('bg-green-500')
@@ -241,7 +240,6 @@
                                         document.querySelector('.ib').style.display = 'none'
                                         document.querySelector('.dm').style.display = 'block'
                                         textContainer.style.display = 'block'
-                                        console.log('hiiiiiii')
                                 }
                                 textContainer.style.display = 'block'
                                 reciever_id = elem.currentTarget.id
@@ -255,7 +253,6 @@
 
                                 socket.emit('catchIds', { sender_id, reciever_id })
                                 socket.on('userInfo', (data) => {
-                                        // console.log(data)
                                         document.querySelector('.headSection').innerHTML = `<img src="data:image/png;base64,${data.pfp}" class="w-10 h-10 object-cover  rounded-full object-top" alt="">
                                                                                                 <p class='text-white'>${data.username}</p>
                                                                                                 <i class="fa-solid fa-ellipsis ml-auto text-white"></i>`
@@ -285,7 +282,6 @@
                                 }).then((data) => {
                                         return data.json()
                                 }).then(resp => {
-                                        console.log(resp)
 
                                         if (resp.success) {
                                                 if (noChat) {
@@ -357,7 +353,6 @@
                 })
 
                 socket.on('loadChat', (data) => {
-                        console.log('loadChat: ', data)
                         if (noChat) {
                                 noChat.style.display = 'none'
                         }
@@ -371,8 +366,6 @@
 
 
                 function scrollChat() {
-                        console.log('text container', text_Container);
-                        console.log('text container length: ', text_Container.scrollHeight);
 
 
                         setTimeout(function () {
@@ -382,8 +375,6 @@
                 }
 
                 socket.on('deletedMsgEvent', (id) => {
-                        console.log('broadcast', id)
-                        console.log(document.getElementById(`${id}-text`))
                         document.getElementById(`${id}-text`).remove();
                 })
 
@@ -397,7 +388,6 @@
                                         let html = ''
 
                                         chats.forEach(e => {
-                                                console.log('text', e)
 
                                                 if (e.senderId === sender_id) {
                                                         // html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
@@ -479,7 +469,6 @@
                         allMsg.forEach((e) => {
                                 e.addEventListener('click', (e) => {
                                         delete_id = e.target.id
-                                        console.log(delete_id)
 
                                         fetch('/delete-chat', {
                                                 method: 'POST',
@@ -508,7 +497,6 @@
                         allMsg.forEach((e) => {
                                 e.addEventListener('click', (e) => {
                                         edit_id = e.target.id
-                                        console.log(edit_id)
 
                                         fetch('/edit-chat', {
                                                 method: 'POST',
@@ -538,7 +526,6 @@
                                                                 }).then(res => {
                                                                         return res.json()
                                                                 }).then(data => {
-                                                                        console.log('dattttatatatat', data)
                                                                         let elem = document.getElementById(`update-${data._id}`)
                                                                         if (elem) {
                                                                                 const textNode = Array.from(elem.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
@@ -557,12 +544,9 @@
                 }
 
                 socket.on('editMsgEvent', (data) => {
-                        console.log(data)
                         let elem = document.getElementById(`update-${data.id}`)
-                        console.log(elem)
                         if (elem) {
                                 const textNode = Array.from(elem.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
-                                console.log(textNode)
                                 textNode.textContent = data.msg
                         }
                 })
