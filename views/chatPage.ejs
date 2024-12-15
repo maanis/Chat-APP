@@ -5,8 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"
+        integrity="sha512-8BHxHDLsOHx+flIrQ0DrZcea7MkHqRU5GbTHmbdzMRnAaoCIkZ97PqZcXJkKZckMMhqfoeaJE+DNUVuyoQsO3Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         body::before {
             content: '';
@@ -27,12 +33,57 @@
 <body>
     <div class="textContainer bg-zinc-400/15 backdrop-blur-[11px] s h-full w-full ">
         <div class="flex headSection p-4 gap-3 h-[10%] items-center">
-
+            <button onclick="window.history.back()"><i class="fa-solid fa-chevron-left text-white"></i></button>
+            <img src="data:image/png;base64,<%= recieverUser.pfp %>"
+                class="w-10 h-10 object-cover  rounded-full object-top" alt="">
+            <p class='text-white'>
+                <%= recieverUser.username %>
+            </p>
+            <i class="fa-solid fa-ellipsis ml-auto text-white"></i>
         </div>
         <div class="seperation w-full bg-zinc-600 h-px "></div>
 
         <div class="texts shadow-sm p-3 h-[80%]  relative w-full overflow-y-auto flex flex-col gap-1">
 
+            <h2 class="text-right relative w-full">
+                <!-- Wrapper -->
+                <div class="relative inline-block message-wrapper">
+                    <!-- Real Text -->
+                    <span
+                        class="bg-zinc-700 cursor-pointer inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg message">
+                        Press and hold me
+                    </span>
+
+                    <!-- Absolute Container -->
+                    <div
+                        class="hidden absolute right-0 top-[110%] bg-[#262626] text-white rounded-lg w-48 py-4 shadow-lg options-container">
+                        <!-- Timestamp -->
+                        <div class="text-sm text-left text-gray-400 px-4 mb-4">Mon 00:02</div>
+
+                        <!-- Forward Button -->
+                        <button class="flex items-center justify-start text-sm px-4 text-white hover:bg-[#1a1a1a] py-3">
+                            <span class="mr-2">✈️</span> Forward
+                        </button>
+
+                        <!-- Separator -->
+                        <div class="border-t border-gray-600"></div>
+
+                        <!-- Copy Button -->
+                        <button class="flex items-center justify-start px-4 text-sm text-white hover:bg-[#1a1a1a] py-3">
+                            <span class="mr-2">📋</span> Copy
+                        </button>
+
+                        <!-- Separator -->
+                        <div class="border-t border-gray-600"></div>
+
+                        <!-- Unsend Button -->
+                        <button
+                            class="flex items-center justify-start px-4 text-sm text-red-500 hover:bg-[#1a1a1a] py-3">
+                            <span class="mr-2">↩️</span> Unsend
+                        </button>
+                    </div>
+                </div>
+            </h2>
 
 
 
@@ -56,6 +107,290 @@
             </form>
         </div>
     </div>
+
+
+    <script>
+        var socket = io
+        var sender_id = '<%=user._id %>'
+        var reciever_id = '<%=reciever_id %>'
+
+        var socket = io('/chat', {
+            auth: {
+                token: sender_id
+            }
+        });
+
+        let text_Container = document.querySelector('.texts')
+        let chat_form = document.querySelector('#chat-form')
+        let textContainer = document.querySelector('.textContainer')
+        let text = document.querySelector('#text')
+        let noChat = document.querySelector('.noChats')
+
+
+        socket.emit('catchIds', { sender_id, reciever_id })
+
+        socket.on('loadOldChats', (data) => {
+            let chats = data
+
+            if (chats.length > 0) {
+                document.querySelector('.texts').innerHTML = ''
+                let html = ''
+
+                chats.forEach(e => {
+
+                    if (e.senderId === sender_id) {
+                        // html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
+                        html += `<h2 id='${e._id}-text' class="text-right relative realText w-full">
+  <div class="wrapper">
+    <span id='update-${e._id}' 
+          class="bg-zinc-300 shadow-2xl z-1 shadow-black group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg message">
+      ${e.message}
+    </span>
+    
+    <!-- Dropdown Menu -->
+    <div
+      id="options-${e._id}"
+      class="hidden absolute z-50 right-[102%] bg-zinc-300/40 backdrop-blur-3xl top-0 flex-col text-white rounded-lg w-48 py-4 shadow-lg options-container">
+      
+      <div class="text-sm text-left text-zinc-900 px-4 mb-4">Mon 00:02</div>
+
+      <!-- Forward Button -->
+      <button class="flex items-center justify-start text-sm px-4 text-zinc-900 hover:bg-zinc-300/50 py-3">
+        <span class="mr-2">✈️</span> Forward
+      </button>
+      <div class="border-t border-gray-600"></div>
+
+      <!-- Copy Button -->
+      <button class="flex items-center justify-start px-4 text-sm text-zinc-900 hover:bg-zinc-300/50 py-3">
+        <span class="mr-2">📋</span> Copy
+      </button>
+      <div class="border-t border-gray-600"></div>
+
+      <!-- Edit Button -->
+      <button
+        id='${e._id}'
+        class="flex editMessage items-center justify-start px-4 text-sm text-zinc-900 hover:bg-zinc-300/50 py-3">
+        <span class="mr-2">✒️</span> Edit
+      </button>
+      <div class="border-t border-gray-600"></div>
+
+      <!-- Unsend Button -->
+      <button
+        id='${e._id}'
+        class="flex items-center deleteMessage justify-start px-4 text-sm text-[red] hover:bg-zinc-300/50 py-3">
+        <span class="mr-2">↩️</span> Unsend
+      </button>
+    </div>
+  </div>
+</h2>
+`
+                    } else {
+                        // className = 'text-left '
+                        // bg = 'border border-zinc-700'
+                        html += `<h2 id='${e._id}-text' class="text-left w-full"><span id='update-${e._id}' class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">${e.message}</span></h2>`
+                    }
+
+                })
+                document.querySelector('.texts').innerHTML = html
+                scrollChat()
+                deleteMessage()
+                editMessage()
+
+
+
+            } else {
+                noChat.style.display = 'block'
+            }
+        })
+
+        chat_form.addEventListener('submit', (e) => {
+            e.preventDefault()
+
+            if (text.value != '') {
+                fetch('/save-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sender_id: sender_id,
+                        reciever_id: reciever_id,
+                        text: text.value,
+                    }),
+                }).then((data) => {
+                    return data.json()
+                }).then(resp => {
+                    console.log(resp.chat)
+
+                    if (resp.success) {
+                        if (noChat) {
+                            noChat.style.display = 'none'
+                        }
+                        let html = `<h2 id='${resp.chat._id}-text' class="text-right relative realText w-full">
+  <div class="wrapper">
+    <span id='update-${resp.chat._id}' 
+          class="bg-zinc-300 shadow-2xl z-1 shadow-black group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg message">
+      ${resp.chat.message}
+    </span>
+    
+    <!-- Dropdown Menu -->
+    <div
+      id="options-${resp.chat._id}"
+      class="hidden absolute z-50 right-[102%] bg-zinc-300/40 backdrop-blur-3xl top-0 flex-col text-white rounded-lg w-48 py-4 shadow-lg options-container">
+      
+      <div class="text-sm text-left text-zinc-900 px-4 mb-4">Mon 00:02</div>
+
+      <!-- Forward Button -->
+      <button class="flex items-center justify-start text-sm px-4 text-zinc-900 hover:bg-zinc-300/50 py-3">
+        <span class="mr-2">✈️</span> Forward
+      </button>
+      <div class="border-t border-gray-600"></div>
+
+      <!-- Copy Button -->
+      <button class="flex items-center justify-start px-4 text-sm text-zinc-900 hover:bg-zinc-300/50 py-3">
+        <span class="mr-2">📋</span> Copy
+      </button>
+      <div class="border-t border-gray-600"></div>
+
+      <!-- Edit Button -->
+      <button
+        id='${resp.chat._id}'
+        class="flex editMessage items-center justify-start px-4 text-sm text-zinc-900 hover:bg-zinc-300/50 py-3">
+        <span class="mr-2">✒️</span> Edit
+      </button>
+      <div class="border-t border-gray-600"></div>
+
+      <!-- Unsend Button -->
+      <button
+        id='${resp.chat._id}'
+        class="flex items-center deleteMessage justify-start px-4 text-sm text-[red] hover:bg-zinc-300/50 py-3">
+        <span class="mr-2">↩️</span> Unsend
+      </button>
+    </div>
+  </div>
+</h2>
+`
+                        document.querySelector('.texts').innerHTML += html
+                        text.value = ''
+                        scrollChat()
+                        deleteMessage()
+                        editMessage()
+                        loadOldChat()
+                        socket.emit('newChat', resp.chat)
+                    }
+
+                })
+            }
+
+        })
+
+        socket.on('loadChat', (data) => {
+            if (noChat) {
+                noChat.style.display = 'none'
+            }
+            if (sender_id == data.recieverId && reciever_id == data.senderId) {
+                let html = `<h2 id='${data._id}-text' class="text-left w-full"><span id='update-${data._id}' class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">${data.message}</span></h2>`
+                document.querySelector('.texts').innerHTML += html
+                scrollChat()
+            }
+        })
+
+        function scrollChat() {
+            setTimeout(function () {
+                text_Container.scrollTop = text_Container.scrollHeight;
+            }, 0);
+
+        }
+
+        socket.on('deletedMsgEvent', (id) => {
+            document.getElementById(`${id}-text`).remove();
+        })
+
+        function deleteMessage() {
+            let allMsg = document.querySelectorAll('.deleteMessage')
+            allMsg.forEach((e) => {
+                e.addEventListener('click', (e) => {
+                    delete_id = e.target.id
+
+                    fetch('/delete-chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            delete_id: delete_id
+                        })
+                    }).then(res => {
+                        return res.json()
+                    }).then(data => {
+                        if (data.success) {
+                            document.getElementById(`${delete_id}-text`).remove()
+                            socket.emit('deleteMsg', delete_id)
+                        } else {
+                            alert('something went wrong')
+                        }
+                    })
+                })
+            })
+        }
+
+        function editMessage() {
+            let allMsg = document.querySelectorAll('.editMessage')
+            allMsg.forEach((e) => {
+                e.addEventListener('click', (e) => {
+                    edit_id = e.target.id
+
+                    fetch('/edit-chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            edit_id: edit_id
+                        })
+                    }).then(res => {
+                        return res.json()
+                    }).then(data => {
+                        if (data.success) {
+                            text.value = data.msg.message
+                            text.focus()
+                            chat_form.addEventListener('click', (e) => {
+                                e.preventDefault()
+                                fetch('/update-chat', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        text: text.value,
+                                        id: data.msg._id
+                                    })
+                                }).then(res => {
+                                    return res.json()
+                                }).then(data => {
+                                    let elem = document.getElementById(`update-${data._id}`)
+                                    if (elem) {
+                                        const textNode = Array.from(elem.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
+                                        textNode.textContent = data.message
+                                        text.value = ''
+                                        socket.emit('editMsg', { msg: data.message, id: data._id })
+                                    }
+
+
+                                })
+                            })
+                        }
+                    })
+                })
+            })
+        }
+
+        socket.on('editMsgEvent', (data) => {
+            console.log(data)
+            let elem = document.getElementById(`update-${data.id}`)
+            elem.textContent = data.msg
+        })
+    </script>
 </body>
 
 </html>

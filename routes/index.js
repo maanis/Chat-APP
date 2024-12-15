@@ -22,8 +22,9 @@ router.get('/dashboard', isLoggedIn ,async function (req, res, next) {
 
 router.get('/chat/:id', isLoggedIn ,async function (req, res, next) {
     let reciever_id = req.params.id
+    let recieverUser = await userModel.findOne({_id: reciever_id})
     let user = req.user
-    res.render('chatPage', {user,reciever_id})
+    res.render('chatPage', {user,reciever_id, recieverUser})
 });
 
 router.post('/save-chat', async function (req, res, next) {
