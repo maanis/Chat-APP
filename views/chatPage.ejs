@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/chatStyle.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"
         integrity="sha512-8BHxHDLsOHx+flIrQ0DrZcea7MkHqRU5GbTHmbdzMRnAaoCIkZ97PqZcXJkKZckMMhqfoeaJE+DNUVuyoQsO3Q=="
@@ -384,6 +384,50 @@
                 })
             })
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const messages = document.querySelectorAll(".realText");
+            const longPressDelay = 500; // Adjust for long-press duration
+
+            messages.forEach((message) => {
+                const optionsContainer = document.querySelector(`#options-${message.id.split('-')[1]}`);
+                let pressTimer;
+
+                // Show dropdown on hover (for desktop)
+                message.addEventListener("mouseenter", () => {
+                    optionsContainer.classList.remove("hidden");
+                    optionsContainer.classList.add("show");
+                    console.log('hii')
+                });
+
+                // Hide dropdown on mouseleave
+                message.addEventListener("mouseleave", () => {
+                    optionsContainer.classList.add("hidden");
+                    optionsContainer.classList.remove("show");
+                });
+
+                // Show dropdown on long-press (for touch devices)
+                message.addEventListener("touchstart", () => {
+                    pressTimer = setTimeout(() => {
+                        optionsContainer.classList.remove("hidden");
+                        optionsContainer.classList.add("show");
+                    }, longPressDelay);
+                });
+
+                // Cancel long-press on touchend or touchmove
+                message.addEventListener("touchend", () => clearTimeout(pressTimer));
+                message.addEventListener("touchmove", () => clearTimeout(pressTimer));
+
+                // Hide dropdown on outside click
+                document.addEventListener("click", (e) => {
+                    if (!message.contains(e.target) && !optionsContainer.contains(e.target)) {
+                        optionsContainer.classList.add("hidden");
+                        optionsContainer.classList.remove("show");
+                    }
+                });
+            });
+        });
+
 
         socket.on('editMsgEvent', (data) => {
             console.log(data)
