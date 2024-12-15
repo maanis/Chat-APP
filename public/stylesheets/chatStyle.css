@@ -1,0 +1,37 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    text-shadow: black;
+  }
+  html,
+  body {
+    height: 100%;
+    width: 100vw;
+    /* background-color: ; */
+  }
+  
+  .hero {
+    height: calc(100vh - 55px);
+  }
+  
+  .b,
+  .box-b {
+    scrollbar-width: none;
+  }
+  
+  .scroll-container {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 10px;
+    scrollbar-width: none;
+  }
+  
+  .texts::-webkit-scrollbar {
+    display: none;
+  
+  }
+
+  

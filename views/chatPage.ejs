@@ -30,7 +30,7 @@
     </style>
 </head>
 
-<body>
+<body class="overflow-hidden">
     <div class="textContainer bg-zinc-400/15 backdrop-blur-[11px] s h-full w-full ">
         <div class="flex headSection p-4 gap-3 h-[10%] items-center">
             <button onclick="window.history.back()"><i class="fa-solid fa-chevron-left text-white"></i></button>
@@ -386,31 +386,36 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            const messages = document.querySelectorAll(".realText");
+            let messages = document.getElementsByClassName("realText");
             const longPressDelay = 500; // Adjust for long-press duration
+            console.log(messages)
 
             messages.forEach((message) => {
-                const optionsContainer = document.querySelector(`#options-${message.id.split('-')[1]}`);
+                console.log(message)
+                const optionsContainer = document.querySelector(`#options-${message.id.split('-')}`);
+                console.log(optionsContainer)
                 let pressTimer;
 
                 // Show dropdown on hover (for desktop)
                 message.addEventListener("mouseenter", () => {
-                    optionsContainer.classList.remove("hidden");
-                    optionsContainer.classList.add("show");
+                    // optionsContainer.classList.remove("hidden");
+                    // optionsContainer.classList.add("block");
+                    optionsContainer.style.display = 'block'
                     console.log('hii')
                 });
 
                 // Hide dropdown on mouseleave
                 message.addEventListener("mouseleave", () => {
-                    optionsContainer.classList.add("hidden");
-                    optionsContainer.classList.remove("show");
+                    // optionsContainer.classList.add("hidden");
+                    // optionsContainer.classList.remove("block");
+                    optionsContainer.style.display = 'none'
+
                 });
 
                 // Show dropdown on long-press (for touch devices)
                 message.addEventListener("touchstart", () => {
                     pressTimer = setTimeout(() => {
-                        optionsContainer.classList.remove("hidden");
-                        optionsContainer.classList.add("show");
+                        optionsContainer.style.display = 'block'
                     }, longPressDelay);
                 });
 
