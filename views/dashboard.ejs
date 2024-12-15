@@ -138,7 +138,9 @@
 
 
 
+                                        
                                         <div
+                                        
                                                 class="noChats hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                                                 No chats to show..</div>
 
@@ -255,7 +257,7 @@
                                 socket.on('userInfo', (data) => {
                                         document.querySelector('.headSection').innerHTML = `<img src="data:image/png;base64,${data.pfp}" class="w-10 h-10 object-cover  rounded-full object-top" alt="">
                                                                                                 <p class='text-white'>${data.username}</p>
-                                                                                                <i class="fa-solid fa-ellipsis ml-auto text-white"></i>`
+                                                                                                <button onclick="window.history.back()"><i class="fa-solid fa-ellipsis ml-auto text-white"></i></button>`
                                         document.querySelector('.aboutImg').src = `data:image/png;base64,${data.pfp}`
                                 })
 
