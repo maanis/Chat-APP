@@ -90,6 +90,8 @@
         let noChat = document.querySelector('.noChats')
         var options
 
+        text.focus()
+
 
         socket.emit('catchIds', { sender_id, reciever_id })
 
@@ -176,7 +178,7 @@
                         const elementId = e.currentTarget.id.replace('update-', '');
                         elem.style.userSelect = 'none';
                         pressTimer = setTimeout(() => {
-                            if(options){options.style.display = 'none'}
+                            if (options) { options.style.display = 'none' }
                             options = document.querySelector(`#options-${elementId}`)
                             options.style.display = 'block'
                         }, 600);
@@ -186,7 +188,7 @@
                     elem.addEventListener("touchend", () => clearTimeout(pressTimer));
                     elem.addEventListener("touchcancel", () => clearTimeout(pressTimer));
                 })
-                
+
 
 
 
@@ -265,6 +267,8 @@
 `
                         document.querySelector('.texts').innerHTML += html
                         text.value = ''
+                        text.focus()
+
                         scrollChat()
                         deleteMessage()
                         editMessage()
