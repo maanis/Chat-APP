@@ -282,6 +282,7 @@
                                 }).then((data) => {
                                         return data.json()
                                 }).then(resp => {
+                                        console.log(resp.chat)
 
                                         if (resp.success) {
                                                 if (noChat) {
@@ -357,7 +358,7 @@
                                 noChat.style.display = 'none'
                         }
                         if (sender_id == data.recieverId && reciever_id == data.senderId) {
-                                let html = `<h2 id='${data._id}-text' class="text-left w-full"><span class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">${data.message}</span></h2>`
+                                let html = `<h2 id='${data._id}-text' class="text-left w-full"><span id='update-${data._id}' class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">${data.message}</span></h2>`
                                 document.querySelector('.texts').innerHTML += html
                                 scrollChat()
                         }
@@ -445,7 +446,7 @@
                                                 } else {
                                                         // className = 'text-left '
                                                         // bg = 'border border-zinc-700'
-                                                        html += `<h2 id='${e._id}-text' class="text-left w-full"><span class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
+                                                        html += `<h2 id='${e._id}-text' class="text-left w-full"><span id='update-${e._id}' class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">${e.message}</span></h2>`
                                                 }
 
                                         })
@@ -544,11 +545,11 @@
                 }
 
                 socket.on('editMsgEvent', (data) => {
+                        console.log(data)
                         let elem = document.getElementById(`update-${data.id}`)
-                        if (elem) {
-                                const textNode = Array.from(elem.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
-                                textNode.textContent = data.msg
-                        }
+                        elem.textContent = data.msg
+
+                        
                 })
 
 

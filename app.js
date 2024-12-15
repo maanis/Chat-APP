@@ -66,6 +66,7 @@ usp.on('connection', async (socket) => {
     })
 
     socket.on('editMsg', (data)=>{
+      console.log('edittttttttt',data)
       socket.broadcast.emit('editMsgEvent', data)
     })
 
