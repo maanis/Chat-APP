@@ -20,6 +20,12 @@ router.get('/dashboard', isLoggedIn ,async function (req, res, next) {
     res.render('dashboard', {user, allUsers})
 });
 
+router.get('/chat/:id', isLoggedIn ,async function (req, res, next) {
+    let reciever_id = req.params.id
+    let user = req.user
+    res.render('chatPage', {user,reciever_id})
+});
+
 router.post('/save-chat', async function (req, res, next) {
     let chat = await chatModel.create({
         senderId : req.body.sender_id,
@@ -57,6 +63,8 @@ router.post('/update-chat', async (req,res)=>{
     await chat.save()
     res.send(chat)
 })
+
+
 
 
 router.get('/logout', logout)

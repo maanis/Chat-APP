@@ -110,7 +110,7 @@
                 <div class="seperation w-px bg-zinc-800 h-full  max-[580px]:hidden"></div>
 
                 <div
-                        class="dm w-[76%] max-[580px]:hidden max-md:h-[92%] max-[850px]:w-[86%] max-md:w-[90%] max-[580px]:w-full bg-zinc-400/15 backdrop-blur-[11px] relative">
+                        class="dm w-[76%] max-md:h-[92%] max-[850px]:w-[86%] max-md:w-[90%] max-[580px]:hidden bg-zinc-400/15 backdrop-blur-[11px] relative">
 
 
                         <div
@@ -126,7 +126,7 @@
                                 <p class="text-[14px] text-zinc-500">start a message by clicking any chat</p>
                         </div>
 
-                        <div class="textContainer s h-full w-full ">
+                        <div class="textContainer max-[580px]:hidden s h-full w-full ">
                                 <div class="flex headSection p-4 gap-3 h-[10%] items-center">
 
                                 </div>
@@ -196,6 +196,8 @@
                 let text_Container = document.querySelector('.texts')
                 let text = document.querySelector('#text')
                 let noChat = document.querySelector('.noChats')
+                let mobileSize = window.matchMedia("(max-width: 580px)");
+                let bigSize = window.matchMedia("(min-width: 580px)");
 
 
                 // realText.forEach(e=>{
@@ -233,18 +235,23 @@
                                 dummyText.style.display = 'none'
                                 const breakpoint = window.matchMedia("(max-width: 1200px)");
                                 const breakpointt = window.matchMedia("(max-width: 850px)");
-                                const mobileSize = window.matchMedia("(max-width: 580px)");
+                                reciever_id = elem.currentTarget.id
                                 if (!breakpoint.matches) {
                                         document.querySelector('.about').style.display = 'block'
                                         document.querySelector('.seperation-about').style.display = 'block'
                                 }
-                                if (mobileSize.matches) {
-                                        document.querySelector('.ib').style.display = 'none'
+                                if (!mobileSize.matches) {
                                         document.querySelector('.dm').style.display = 'block'
                                         textContainer.style.display = 'block'
                                 }
-                                textContainer.style.display = 'block'
-                                reciever_id = elem.currentTarget.id
+                                if(mobileSize.matches){
+                                        document.querySelector('.dm').style.display = 'none'
+                                        textContainer.style.display = 'none'
+
+                                        console.log('mobile sixe')
+                                        window.location.href = `/chat/${reciever_id}`; 
+                                }
+                                
                                 if (!breakpointt.matches) {
                                         users.forEach(li => li.classList.remove('bg-zinc-300'));
                                         elem.currentTarget.classList.add('bg-zinc-300');
