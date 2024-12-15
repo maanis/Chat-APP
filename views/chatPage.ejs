@@ -45,45 +45,7 @@
 
         <div class="texts shadow-sm p-3 h-[80%]  relative w-full overflow-y-auto flex flex-col gap-1">
 
-            <h2 class="text-right relative w-full">
-                <!-- Wrapper -->
-                <div class="relative inline-block message-wrapper">
-                    <!-- Real Text -->
-                    <span
-                        class="bg-zinc-700 cursor-pointer inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg message">
-                        Press and hold me
-                    </span>
 
-                    <!-- Absolute Container -->
-                    <div
-                        class="hidden absolute right-0 top-[110%] bg-[#262626] text-white rounded-lg w-48 py-4 shadow-lg options-container">
-                        <!-- Timestamp -->
-                        <div class="text-sm text-left text-gray-400 px-4 mb-4">Mon 00:02</div>
-
-                        <!-- Forward Button -->
-                        <button class="flex items-center justify-start text-sm px-4 text-white hover:bg-[#1a1a1a] py-3">
-                            <span class="mr-2">✈️</span> Forward
-                        </button>
-
-                        <!-- Separator -->
-                        <div class="border-t border-gray-600"></div>
-
-                        <!-- Copy Button -->
-                        <button class="flex items-center justify-start px-4 text-sm text-white hover:bg-[#1a1a1a] py-3">
-                            <span class="mr-2">📋</span> Copy
-                        </button>
-
-                        <!-- Separator -->
-                        <div class="border-t border-gray-600"></div>
-
-                        <!-- Unsend Button -->
-                        <button
-                            class="flex items-center justify-start px-4 text-sm text-red-500 hover:bg-[#1a1a1a] py-3">
-                            <span class="mr-2">↩️</span> Unsend
-                        </button>
-                    </div>
-                </div>
-            </h2>
 
 
 
@@ -121,10 +83,12 @@
         });
 
         let text_Container = document.querySelector('.texts')
+        let msgs
         let chat_form = document.querySelector('#chat-form')
         let textContainer = document.querySelector('.textContainer')
         let text = document.querySelector('#text')
         let noChat = document.querySelector('.noChats')
+        var options
 
 
         socket.emit('catchIds', { sender_id, reciever_id })
@@ -145,42 +109,43 @@
     <span id='update-${e._id}' 
           class="bg-zinc-300 shadow-2xl z-1 shadow-black group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg message">
       ${e.message}
-    </span>
     
-    <!-- Dropdown Menu -->
-    <div
-      id="options-${e._id}"
-      class="hidden absolute z-50 right-[102%] bg-zinc-300/40 backdrop-blur-3xl top-0 flex-col text-white rounded-lg w-48 py-4 shadow-lg options-container">
-      
-      <div class="text-sm text-left text-zinc-900 px-4 mb-4">Mon 00:02</div>
+    
+        <!-- Dropdown Menu -->
+        <div
+        id="options-${e._id}"
+        class="hidden absolute z-50 right-[102%] bg-zinc-300/40 backdrop-blur-3xl top-0 flex-col text-white rounded-lg w-48 py-4 shadow-lg options-container">
+        
+        <div class="text-sm text-left text-zinc-900 px-4 mb-4">Mon 00:02</div>
 
-      <!-- Forward Button -->
-      <button class="flex items-center justify-start text-sm px-4 text-zinc-900 hover:bg-zinc-300/50 py-3">
-        <span class="mr-2">✈️</span> Forward
-      </button>
-      <div class="border-t border-gray-600"></div>
+        <!-- Forward Button -->
+        <button class="flex w-full items-center justify-start text-sm px-4 text-zinc-900 hover:bg-zinc-300/50 py-3">
+            <span class="mr-2">✈️</span> Forward
+        </button>
+        <div class="border-t border-gray-600"></div>
 
-      <!-- Copy Button -->
-      <button class="flex items-center justify-start px-4 text-sm text-zinc-900 hover:bg-zinc-300/50 py-3">
-        <span class="mr-2">📋</span> Copy
-      </button>
-      <div class="border-t border-gray-600"></div>
+        <!-- Copy Button -->
+        <button class="flex w-full items-center justify-start px-4 text-sm text-zinc-900 hover:bg-zinc-300/50 py-3">
+            <span class="mr-2">📋</span> Copy
+        </button>
+        <div class="border-t border-gray-600"></div>
 
-      <!-- Edit Button -->
-      <button
-        id='${e._id}'
-        class="flex editMessage items-center justify-start px-4 text-sm text-zinc-900 hover:bg-zinc-300/50 py-3">
-        <span class="mr-2">✒️</span> Edit
-      </button>
-      <div class="border-t border-gray-600"></div>
+        <!-- Edit Button -->
+        <button
+            id='${e._id}'
+            class="flex editMessage w-full items-center justify-start px-4 text-sm text-zinc-900 hover:bg-zinc-300/50 py-3">
+            <span class="mr-2">✒️</span> Edit
+        </button>
+        <div class="border-t border-gray-600"></div>
 
-      <!-- Unsend Button -->
-      <button
-        id='${e._id}'
-        class="flex items-center deleteMessage justify-start px-4 text-sm text-[red] hover:bg-zinc-300/50 py-3">
-        <span class="mr-2">↩️</span> Unsend
-      </button>
-    </div>
+        <!-- Unsend Button -->
+        <button
+            id='${e._id}'
+            class="flex w-full items-center deleteMessage justify-start px-4 text-sm text-[red] hover:bg-zinc-300/50 py-3">
+            <span class="mr-2">↩️</span> Unsend
+        </button>
+        </div>
+    </span>
   </div>
 </h2>
 `
@@ -195,6 +160,26 @@
                 scrollChat()
                 deleteMessage()
                 editMessage()
+
+
+                msgs = document.querySelectorAll('.message')
+                let pressTimer
+                // let options
+                console.log(msgs)
+                msgs.forEach(elem => {
+                    elem.addEventListener('touchstart', (e) => {
+                        const elementId = e.currentTarget.id.replace('update-', '');
+                        elem.style.userSelect = 'none';
+                        pressTimer = setTimeout(() => {
+                            options = document.querySelector(`#options-${elementId}`)
+                            options.style.display = 'block'
+                        }, 1000);
+                    })
+
+                    elem.addEventListener("touchend", () => clearTimeout(pressTimer));
+                    elem.addEventListener("touchcancel", () => clearTimeout(pressTimer));
+
+                })
 
 
 
@@ -231,42 +216,43 @@
     <span id='update-${resp.chat._id}' 
           class="bg-zinc-300 shadow-2xl z-1 shadow-black group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg message">
       ${resp.chat.message}
-    </span>
+    
     
     <!-- Dropdown Menu -->
-    <div
-      id="options-${resp.chat._id}"
-      class="hidden absolute z-50 right-[102%] bg-zinc-300/40 backdrop-blur-3xl top-0 flex-col text-white rounded-lg w-48 py-4 shadow-lg options-container">
-      
-      <div class="text-sm text-left text-zinc-900 px-4 mb-4">Mon 00:02</div>
+        <div
+        id="options-${resp.chat._id}"
+        class="hidden absolute z-50 right-[102%] bg-zinc-300/40 backdrop-blur-3xl top-0 flex-col text-white rounded-lg w-48 py-4 shadow-lg options-container">
+        
+        <div class="text-sm text-left text-zinc-900 px-4 mb-4">Mon 00:02</div>
 
-      <!-- Forward Button -->
-      <button class="flex items-center justify-start text-sm px-4 text-zinc-900 hover:bg-zinc-300/50 py-3">
-        <span class="mr-2">✈️</span> Forward
-      </button>
-      <div class="border-t border-gray-600"></div>
+        <!-- Forward Button -->
+        <button class="flex w-full items-center justify-start text-sm px-4 text-zinc-900 hover:bg-zinc-300/50 py-3">
+            <span class="mr-2">✈️</span> Forward
+        </button>
+        <div class="border-t border-gray-600"></div>
 
-      <!-- Copy Button -->
-      <button class="flex items-center justify-start px-4 text-sm text-zinc-900 hover:bg-zinc-300/50 py-3">
-        <span class="mr-2">📋</span> Copy
-      </button>
-      <div class="border-t border-gray-600"></div>
+        <!-- Copy Button -->
+        <button class="flex w-full items-center justify-start px-4 text-sm text-zinc-900 hover:bg-zinc-300/50 py-3">
+            <span class="mr-2">📋</span> Copy
+        </button>
+        <div class="border-t border-gray-600"></div>
 
-      <!-- Edit Button -->
-      <button
-        id='${resp.chat._id}'
-        class="flex editMessage items-center justify-start px-4 text-sm text-zinc-900 hover:bg-zinc-300/50 py-3">
-        <span class="mr-2">✒️</span> Edit
-      </button>
-      <div class="border-t border-gray-600"></div>
+        <!-- Edit Button -->
+        <button
+            id='${resp.chat._id}'
+            class="flex editMessage w-full items-center justify-start px-4 text-sm text-zinc-900 hover:bg-zinc-300/50 py-3">
+            <span class="mr-2">✒️</span> Edit
+        </button>
+        <div class="border-t border-gray-600"></div>
 
-      <!-- Unsend Button -->
-      <button
-        id='${resp.chat._id}'
-        class="flex items-center deleteMessage justify-start px-4 text-sm text-[red] hover:bg-zinc-300/50 py-3">
-        <span class="mr-2">↩️</span> Unsend
-      </button>
-    </div>
+        <!-- Unsend Button -->
+        <button
+            id='${resp.chat._id}'
+            class="flex items-center w-full deleteMessage justify-start px-4 text-sm text-[red] hover:bg-zinc-300/50 py-3">
+            <span class="mr-2">↩️</span> Unsend
+        </button>
+        </div>
+    </span>
   </div>
 </h2>
 `
@@ -275,7 +261,6 @@
                         scrollChat()
                         deleteMessage()
                         editMessage()
-                        loadOldChat()
                         socket.emit('newChat', resp.chat)
                     }
 
@@ -285,6 +270,7 @@
         })
 
         socket.on('loadChat', (data) => {
+            console.log('fata',data)
             if (noChat) {
                 noChat.style.display = 'none'
             }
@@ -335,9 +321,11 @@
         }
 
         function editMessage() {
+            
             let allMsg = document.querySelectorAll('.editMessage')
             allMsg.forEach((e) => {
                 e.addEventListener('click', (e) => {
+                    options.style.display = 'none'
                     edit_id = e.target.id
 
                     fetch('/edit-chat', {
@@ -385,54 +373,9 @@
             })
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            let messages = document.getElementsByClassName("realText");
-            const longPressDelay = 500; // Adjust for long-press duration
-            console.log(messages)
+        
 
-            messages.forEach((message) => {
-                console.log(message)
-                const optionsContainer = document.querySelector(`#options-${message.id.split('-')}`);
-                console.log(optionsContainer)
-                let pressTimer;
-
-                // Show dropdown on hover (for desktop)
-                message.addEventListener("mouseenter", () => {
-                    // optionsContainer.classList.remove("hidden");
-                    // optionsContainer.classList.add("block");
-                    optionsContainer.style.display = 'block'
-                    console.log('hii')
-                });
-
-                // Hide dropdown on mouseleave
-                message.addEventListener("mouseleave", () => {
-                    // optionsContainer.classList.add("hidden");
-                    // optionsContainer.classList.remove("block");
-                    optionsContainer.style.display = 'none'
-
-                });
-
-                // Show dropdown on long-press (for touch devices)
-                message.addEventListener("touchstart", () => {
-                    pressTimer = setTimeout(() => {
-                        optionsContainer.style.display = 'block'
-                    }, longPressDelay);
-                });
-
-                // Cancel long-press on touchend or touchmove
-                message.addEventListener("touchend", () => clearTimeout(pressTimer));
-                message.addEventListener("touchmove", () => clearTimeout(pressTimer));
-
-                // Hide dropdown on outside click
-                document.addEventListener("click", (e) => {
-                    if (!message.contains(e.target) && !optionsContainer.contains(e.target)) {
-                        optionsContainer.classList.add("hidden");
-                        optionsContainer.classList.remove("show");
-                    }
-                });
-            });
-        });
-
+        console.log(msgs)
 
         socket.on('editMsgEvent', (data) => {
             console.log(data)
