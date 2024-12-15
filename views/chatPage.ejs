@@ -31,7 +31,7 @@
 </head>
 
 <body class="overflow-hidden">
-    <div class="textContainer bg-zinc-400/15 backdrop-blur-[11px] s h-full w-full ">
+    <div class="textContainer  bg-zinc-400/15 backdrop-blur-[11px] s h-full w-full ">
         <div class="flex headSection p-4 gap-3 h-[10%] items-center">
             <button onclick="window.history.back()"><i class="fa-solid fa-chevron-left text-white"></i></button>
             <img src="data:image/png;base64,<%= recieverUser.pfp %>"
@@ -164,22 +164,29 @@
 
                 msgs = document.querySelectorAll('.message')
                 let pressTimer
+                let optionCont = document.querySelectorAll('.options-container')
                 // let options
                 console.log(msgs)
                 msgs.forEach(elem => {
                     elem.addEventListener('touchstart', (e) => {
+                        // optionCont.forEach(e => e.style.display = 'none')
+                        const element = e.currentTarget
+                        console.log('element', element)
+                        // console.log('element-classes',element.classList)
                         const elementId = e.currentTarget.id.replace('update-', '');
                         elem.style.userSelect = 'none';
                         pressTimer = setTimeout(() => {
+                            if(options){options.style.display = 'none'}
                             options = document.querySelector(`#options-${elementId}`)
                             options.style.display = 'block'
-                        }, 1000);
+                        }, 600);
                     })
+
 
                     elem.addEventListener("touchend", () => clearTimeout(pressTimer));
                     elem.addEventListener("touchcancel", () => clearTimeout(pressTimer));
-
                 })
+                
 
 
 
@@ -270,7 +277,7 @@
         })
 
         socket.on('loadChat', (data) => {
-            console.log('fata',data)
+            console.log('fata', data)
             if (noChat) {
                 noChat.style.display = 'none'
             }
@@ -321,7 +328,7 @@
         }
 
         function editMessage() {
-            
+
             let allMsg = document.querySelectorAll('.editMessage')
             allMsg.forEach((e) => {
                 e.addEventListener('click', (e) => {
@@ -362,6 +369,7 @@
                                         textNode.textContent = data.message
                                         text.value = ''
                                         socket.emit('editMsg', { msg: data.message, id: data._id })
+                                        location.reload()
                                     }
 
 
@@ -373,7 +381,7 @@
             })
         }
 
-        
+
 
         console.log(msgs)
 
