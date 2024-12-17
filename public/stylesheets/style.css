@@ -21,6 +21,10 @@ body {
   scrollbar-width: none;
 }
 
+h2{
+  word-wrap: break-word;
+}
+
 .scroll-container {
   display: flex;
   overflow-x: auto;

@@ -293,7 +293,7 @@
                                                 }
                                                 let html = `<h2 id='${resp.chat._id}-text'  class="text-right  relative  realText  w-full">
                                         <div class="wrapper">
-                                                <span id='update-${resp.chat._id}' class="bg-zinc-300 shadow-2xl shadow-black group cursor-pointer relative inline-block shadow-2xl z-1 text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">
+                                                <span id='update-${resp.chat._id}' class="bg-zinc-300 shadow-md  group cursor-pointer relative inline-block  z-1 text-[14px] max-w-[50%] text-left px-4 py-2 rounded-lg">
                                                 ${resp.chat.message}
                                                 <div class="hidden group-hover:flex absolute right-[102%] top bg-zinc-300/40 backdrop-blur-3xl-0 flex-col z-50 text-white rounded-lg w-48 py-4 shadow-lg">
                                                         <!-- Timestamp -->
@@ -361,7 +361,7 @@
                                 noChat.style.display = 'none'
                         }
                         if (sender_id == data.recieverId && reciever_id == data.senderId) {
-                                let html = `<h2 id='${data._id}-text' class="text-left w-full"><span id='update-${data._id}' class="border border-zinc-700 inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">${data.message}</span></h2>`
+                                let html = `<h2 id='${data._id}-text' class="text-left w-full"><span id='update-${data._id}' class="border border-zinc-700 inline-block text-[14px] max-w-[50%] text-left px-4 py-2 rounded-lg">${data.message}</span></h2>`
                                 document.querySelector('.texts').innerHTML += html
                                 scrollChat()
                         }
@@ -397,7 +397,7 @@
                                                         // html += `<h2 class="${className} w-full"><span class="${bg} inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-full">${e.message}</span></h2>`
                                                         html += `<h2 id='${e._id}-text' class="text-right relative  realText  w-full">
                                         <div class="wrapper">
-                                                <span id='update-${e._id}' class="bg-zinc-300 shadow-2xl z-1 shadow-black group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg">
+                                                <span id='update-${e._id}' class="bg-zinc-300 shadow-md z-1  group cursor-pointer relative inline-block text-[14px] max-w-[50%] text-left px-4 py-2 rounded-lg">
                                                 ${e.message}
                                                 <div class="hidden group-hover:flex absolute z-50 right-[102%] bg-zinc-300/40 backdrop-blur-3xl top-0 flex-col z-50 text-white rounded-lg w-48 py-4 shadow-lg">
                                                         <!-- Timestamp -->
