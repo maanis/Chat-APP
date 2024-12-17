@@ -57,7 +57,7 @@
         </div>
 
 
-        <div class="h-[10%] relative flex justify-self-center items-center w-full px-4">
+        <div class="h-[10%]  relative flex justify-self-center items-center w-full px-4">
             <form id="chat-form"
                 class="flex w-full h-[45px] relative rounded-full items-center px-3 border border-zinc-600">
                 <i class="fa-regular fa-face-smile text-white"></i>
@@ -109,7 +109,7 @@
                         html += `<h2 id='${e._id}-text' class="text-right relative realText w-full">
   <div class="wrapper">
     <span id='update-${e._id}' 
-          class="bg-zinc-300 shadow-2xl z-1 shadow-black group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg message">
+          class="bg-zinc-300 break-words shadow-2xl z-1 shadow-black group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg message">
       ${e.message}
     
     
@@ -223,7 +223,7 @@
                         let html = `<h2 id='${resp.chat._id}-text' class="text-right relative realText w-full">
   <div class="wrapper">
     <span id='update-${resp.chat._id}' 
-          class="bg-zinc-300 shadow-2xl z-1 shadow-black group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg message">
+          class="bg-zinc-300 break-words shadow-2xl z-1 shadow-black group cursor-pointer relative inline-block text-[14px] max-w-[60%] text-left px-4 py-2 rounded-lg message">
       ${resp.chat.message}
     
     
