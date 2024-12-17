@@ -31,7 +31,7 @@
 </head>
 
 <body class="overflow-hidden">
-    <div class="textContainer  bg-zinc-400/15 backdrop-blur-[11px] s h-full w-full ">
+    <div class="textContainer bg-zinc-400/15 backdrop-blur-[11px] s h-full w-full ">
         <div class="flex headSection p-4 gap-3 h-[10%] items-center">
             <button onclick="window.history.back()"><i class="fa-solid fa-chevron-left text-white"></i></button>
             <img src="data:image/png;base64,<%= recieverUser.pfp %>"
@@ -91,6 +91,8 @@
         var options
 
         text.focus()
+
+
 
 
         socket.emit('catchIds', { sender_id, reciever_id })
